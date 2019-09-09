@@ -21,5 +21,6 @@ services:
       - certs:/etc/nginx/certs
       - conf:/etc/nginx/conf.d
       - html:/usr/share/nginx/html
+      - vhost.d:/etc/nginx/vhost.d
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./vhost.d:/etc/nginx/vhost.d
+      - ./relayer/vhost.d/relayer.conf:/etc/nginx/vhost.d/${HOST_RELAYER}
