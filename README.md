@@ -29,6 +29,9 @@ make logs
 
 # Download and migrate contracts
 make migrate
+
+# Stop all containers
+make down
 ```
 
 ## License
