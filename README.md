@@ -4,7 +4,7 @@ Infrastructure provisioning for Circles development and production environments.
 
 ## Setup
 
-* Change the `.env` or `.env.production` file according to your needs.
+* Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs.
 
 * Edit your `/etc/hosts` file and add the following hostnames (or similar, depending on your `.env` configuration):
 
