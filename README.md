@@ -21,11 +21,12 @@ make build
 # .. use production environment
 ENV=production make build
 
-# Start containers in background
+# Start containers
 make up
 
 # Show container logs
 make logs
+make logs circles-ganache
 
 # Download and migrate contracts
 make migrate

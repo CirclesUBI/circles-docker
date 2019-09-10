@@ -10,8 +10,9 @@ services:
   relayer-worker: &relayer-worker
     depends_on:
       - db
-      - redis
       - ganache
+      - redis
+      - relayer-service
 
   relayer-scheduler:
     <<: *relayer-worker

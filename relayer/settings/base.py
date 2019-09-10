@@ -24,8 +24,10 @@ USE_TZ = True
 
 # DATABASES
 
+psql_url = 'psql://' + env('POSTGRES_USER') + ':' + env('POSTGRES_PASSWORD') + '@db:5432/' + env('POSTGRES_DATABASE_RELAYER')
+
 DATABASES = {
-    'default': env.db('DATABASE_URL'),
+    'default': env.db('RELAYER_DATABASE', default=psql_url),
 }
 
 DATABASES['default']['ATOMIC_REQUESTS'] = True
@@ -75,8 +77,6 @@ MIDDLEWARE = [
 # STATIC
 
 STATIC_ROOT = '/usr/share/nginx/html/relayer';
-
-# STATIC_ROOT = env('STATIC_ROOT', default=str(ROOT_DIR('staticfiles')))
 
 STATIC_URL = '/static/'
 
@@ -130,7 +130,7 @@ FIXTURE_DIRS = (
 
 # EMAIL
 
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 # ADMIN
 
@@ -149,7 +149,7 @@ INSTALLED_APPS += [
     'django_celery_beat',
 ]
 
-CELERY_BROKER_URL = env('REDIS_URL', default='redis://redis:6379/0')
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='django://')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_SERIALIZER = 'json'
@@ -211,13 +211,13 @@ LOGGING = {
             'level': 'DEBUG' if DEBUG else 'INFO',
         },
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': True
         },
         'django.security.DisallowedHost': {
             'level': 'ERROR',
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['console'],
             'propagate': True
         },
         'django.server': {  # Gunicorn uses `gunicorn.access`
@@ -229,11 +229,11 @@ LOGGING = {
     }
 }
 
-REDIS_URL = env('REDIS_URL', default='redis://localhost:6379/0')
+REDIS_URL = env('RELAYER_REDIS_URL', default='redis://localhost:6379/0')
 
 # ETHEREUM
 
-ETH_HASH_PREFIX = env('ETH_HASH_PREFIX', default='GNO')
+ETH_HASH_PREFIX = env('ETH_HASH_PREFIX', default='ETH')
 ETHEREUM_NODE_URL = env('ETHEREUM_NODE_URL', default=None)
 ETHEREUM_TRACING_NODE_URL = env('ETHEREUM_TRACING_NODE_URL', default=ETHEREUM_NODE_URL)
 
@@ -242,25 +242,38 @@ GAS_STATION_NUMBER_BLOCKS = env('GAS_STATION_NUMBER_BLOCKS', default=300)
 # SAFE
 
 SAFE_FUNDER_PRIVATE_KEY = env('SAFE_FUNDER_PRIVATE_KEY', default=None)
+
 # Maximum ether (no wei) for a single transaction (security limit)
 SAFE_FUNDER_MAX_ETH = env.int('SAFE_FUNDER_MAX_ETH', default=0.1)
+
 SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=0)  # Set to at least 3
+
 # Master Copy Address of Safe Contract
 SAFE_CONTRACT_ADDRESS = env('SAFE_CONTRACT_ADDRESS', default='0x' + '0' * 39 + '1')
+
 SAFE_OLD_CONTRACT_ADDRESS = env('SAFE_OLD_CONTRACT_ADDRESS', default='0x' + '0' * 39 + '1')
-SAFE_VALID_CONTRACT_ADDRESSES = set(env.list('SAFE_VALID_CONTRACT_ADDRESSES',
-                                             default=[])) | {SAFE_CONTRACT_ADDRESS, SAFE_OLD_CONTRACT_ADDRESS}
+
+SAFE_VALID_CONTRACT_ADDRESSES = set(env.list('SAFE_VALID_CONTRACT_ADDRESSES', default=[])) | {SAFE_CONTRACT_ADDRESS, SAFE_OLD_CONTRACT_ADDRESS}
+
 SAFE_PROXY_FACTORY_ADDRESS = env('SAFE_PROXY_FACTORY_ADDRESS', default='0x' + '0' * 39 + '2')
+
 # If FIXED_GAS_PRICE is None, GasStation will be used
 FIXED_GAS_PRICE = env.int('FIXED_GAS_PRICE', default=None)
+
 SAFE_TX_SENDER_PRIVATE_KEY = env('SAFE_TX_SENDER_PRIVATE_KEY', default=None)
 
 SAFE_CHECK_DEPLOYER_FUNDED_DELAY = env.int('SAFE_CHECK_DEPLOYER_FUNDED_DELAY', default=1 * 30)
+
 SAFE_CHECK_DEPLOYER_FUNDED_RETRIES = env.int('SAFE_CHECK_DEPLOYER_FUNDED_RETRIES', default=10)
+
 SAFE_FIXED_CREATION_COST = env.int('SAFE_FIXED_CREATION_COST', default=None)
+
 SAFE_ACCOUNTS_BALANCE_WARNING = env.int('SAFE_ACCOUNTS_BALANCE_WARNING', default=200000000000000000)  # 0.2 Eth
 
 NOTIFICATION_SERVICE_URI = env('NOTIFICATION_SERVICE_URI', default=None)
 NOTIFICATION_SERVICE_PASS = env('NOTIFICATION_SERVICE_PASS', default=None)
+
+TOKEN_LOGO_BASE_URI = env('TOKEN_LOGO_BASE_URI', default='')
+TOKEN_LOGO_EXTENSION = env('TOKEN_LOGO_EXTENSION', default='.png')
 
 INTERNAL_TXS_BLOCK_PROCESS_LIMIT = env('INTERNAL_TXS_BLOCK_PROCESS_LIMIT', default=100000)

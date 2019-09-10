@@ -13,7 +13,7 @@ up: ## Start containers in background
 down: ## Stop containers
 	$(COMPOSE) down
 
-logs: ## Show container logs
+logs: ## Follow container logs
 	$(COMPOSE) logs -f
 
 migrate: ## Download and migrate contracts

@@ -1,4 +1,4 @@
-from .base import *  # noqa
+from .base import *
 from .base import env
 
 # GENERAL
@@ -8,15 +8,14 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['circles.space'])
 
 # DATABASES
 
-DATABASES['default'] = env.db('DATABASE_URL')  # noqa F405
-DATABASES['default']['ATOMIC_REQUESTS'] = False # noqa F405
+DATABASES['default']['ATOMIC_REQUESTS'] = False
 
 # CACHES
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('REDIS_URL'),
+        'LOCATION': env('RELAYER_REDIS_URL'),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'IGNORE_EXCEPTIONS': True,
@@ -42,7 +41,7 @@ X_FRAME_OPTIONS = 'DENY'
 
 # TEMPLATES
 
-TEMPLATES[0]['OPTIONS']['loaders'] = [  # noqa F405
+TEMPLATES[0]['OPTIONS']['loaders'] = [
     (
         'django.template.loaders.cached.Loader',
         [
@@ -52,19 +51,10 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [  # noqa F405
     ),
 ]
 
-# EMAIL
-
-DEFAULT_FROM_EMAIL = env(
-    'DJANGO_DEFAULT_FROM_EMAIL',
-    default='Safe Push Service <noreply@joincircles.net>'
-)
-SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
-EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[Circles Safe Push Service]')
-
 # ADMIN
 
 ADMIN_URL = env('DJANGO_ADMIN_URL', default=r'^admin/')
 
 # GUNICORN
 
-INSTALLED_APPS += ['gunicorn']  # noqa F405
+INSTALLED_APPS += ['gunicorn']

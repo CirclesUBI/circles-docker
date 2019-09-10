@@ -1,17 +1,15 @@
 import socket
 
-from .base import *  # noqa
+from .base import *
 from .base import env
 
 # GENERAL
 
 DEBUG = True
 SECRET_KEY = env('DJANGO_SECRET_KEY')
+
 ALLOWED_HOSTS = [
-    "relay.circles.local",
-    "localhost",
-    "127.0.0.1",
-    "0.0.0.0",
+    env('HOST_RELAYER', default='localhost'),
 ]
 
 # CACHES
@@ -23,18 +21,12 @@ CACHES = {
     }
 }
 
-# EMAIL
-
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-
 # DJANGO DEBUG TOOLBAR
 
-INSTALLED_APPS += ['debug_toolbar']  # noqa F405
+INSTALLED_APPS += ['debug_toolbar']
 
 MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware',
-               'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware']  # noqa F405
+               'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware']
 
 DEBUG_TOOLBAR_CONFIG = {
     'DISABLE_PANELS': [
@@ -56,7 +48,7 @@ INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('REDIS_URL'),
+        'LOCATION': env('RELAYER_REDIS_URL'),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'IGNORE_EXCEPTIONS': True,
