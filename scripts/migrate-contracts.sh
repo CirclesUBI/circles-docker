@@ -6,7 +6,7 @@ TMP_FOLDER=.tmp
 # Download or update contracts
 if [ -d "$TMP_FOLDER" ]; then
   cd $TMP_FOLDER
-  git checkout -
+  git pull
 else
   git clone $REPOSITORY $TMP_FOLDER
   cd $TMP_FOLDER
