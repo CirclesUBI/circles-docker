@@ -3,9 +3,14 @@
 REPOSITORY=https://github.com/CirclesUBI/circles-contracts.git
 TMP_FOLDER=.tmp
 
-# Download contracts
-git clone $REPOSITORY $TMP_FOLDER
-cd $TMP_FOLDER
+# Download or update contracts
+if [ -d "$TMP_FOLDER" ]; then
+  cd $TMP_FOLDER
+  git checkout -
+else
+  git clone $REPOSITORY $TMP_FOLDER
+  cd $TMP_FOLDER
+fi
 
 # Install dependencies
 npm install
@@ -15,4 +20,4 @@ npm install
 
 # Cleanup
 cd ..
-rm -rf $TMP_FOLDER
+# rm -rf $TMP_FOLDER
