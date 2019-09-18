@@ -10,6 +10,7 @@ Infrastructure provisioning for Circles development and production environments.
 
     ```
     127.0.1.1 relay.circles.local
+    127.0.1.1 api.circles.local
     ```
 
 ## Usage
