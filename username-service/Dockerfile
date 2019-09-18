@@ -1,6 +1,6 @@
 FROM node:11-slim
 
-ENV GIT_COMMIT 3db7794
+ENV GIT_COMMIT 65cf8c6
 
 WORKDIR /usr/src
 
