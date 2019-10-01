@@ -1,5 +1,6 @@
-FROM python:3.7-slim-stretch
+FROM python:3.7-slim
 
+ENV GIT_COMMIT 8c5ee3c
 ENV PYTHONUNBUFFERED 1
 ENV TINI_VERSION v0.18.0
 
@@ -7,12 +8,17 @@ ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 
-RUN apt-get update \
-      && apt-get install -y git
+# Create man folders which are required by postgres
+RUN for i in {1..8}; do mkdir -p "/usr/share/man/man$i"; done
 
+# Install postgres-client
+RUN apt-get update \
+      && apt-get install -y git postgresql-client
+
+# Install Safe relay service
 RUN git clone https://github.com/CirclesUBI/safe-relay-service.git \
       && cd safe-relay-service \
-      && git checkout --quiet 8c5ee3c
+      && git checkout --quiet ${GIT_COMMIT}
 
 WORKDIR safe-relay-service
 
@@ -34,12 +40,15 @@ RUN set -ex \
 
 EXPOSE 8888
 
+# Copy all run scripts
 COPY run.sh .
 COPY run-worker.sh .
 COPY run-scheduler.sh .
+COPY wait-for-db.sh .
 
-RUN chmod +x run*
+RUN chmod +x *.sh
 
+# Replace settings with ours
 COPY settings ./config/settings
 
-ENTRYPOINT ["/tini", "--"]
+ENTRYPOINT ["./wait-for-db.sh", "/tini", "--"]

@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 
 volumes:
   certs:
@@ -16,16 +16,12 @@ services:
       - .env
     volumes:
       - ./db/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh
-    ports:
-      - "5432:5432"
 
   redis:
     image: redis:5.0.5-alpine
     container_name: circles-redis
     env_file:
       - .env
-    ports:
-      - "6379:6379"
 
   nginx:
     image: nginx:alpine
@@ -91,3 +87,15 @@ services:
     <<: *relayer-worker
     container_name: circles-relayer-scheduler
     command: ./run-scheduler.sh
+
+  username-service:
+    build: username-service
+    container_name: circles-username-service
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - VIRTUAL_HOST=${HOST_USERNAME_SERVICE}
+      - LETSENCRYPT_HOST=${HOST_USERNAME_SERVICE}
+      - LETSENCRYPT_EMAIL=${SSL_EMAIL}

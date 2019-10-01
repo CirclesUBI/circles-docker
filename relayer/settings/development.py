@@ -9,6 +9,7 @@ DEBUG = True
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 ALLOWED_HOSTS = [
+    'relayer-service',
     env('HOST_RELAYER', default='localhost'),
 ]
 
