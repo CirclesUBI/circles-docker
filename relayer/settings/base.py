@@ -257,6 +257,8 @@ SAFE_VALID_CONTRACT_ADDRESSES = set(env.list('SAFE_VALID_CONTRACT_ADDRESSES', de
 
 SAFE_PROXY_FACTORY_ADDRESS = env('PROXY_FACTORY_ADDRESS', default='0x' + '0' * 39 + '2')
 
+CIRCLES_HUB_ADDRESS = env('HUB_ADDRESS', default='0x' + '0' * 39 + '2')
+
 # If FIXED_GAS_PRICE is None, GasStation will be used
 FIXED_GAS_PRICE = env.int('FIXED_GAS_PRICE', default=None)
 
