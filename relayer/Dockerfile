@@ -12,7 +12,7 @@ RUN apt-get update \
 
 RUN git clone https://github.com/CirclesUBI/safe-relay-service.git \
       && cd safe-relay-service \
-      && git checkout --quiet ee73b0e
+      && git checkout --quiet 8c5ee3c
 
 WORKDIR safe-relay-service
 
