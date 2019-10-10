@@ -1,7 +1,6 @@
 FROM node:11-slim
 
-ENV GIT_COMMIT 65cf8c6
-
+ENV GIT_COMMIT 1ee92af
 WORKDIR /usr/src
 
 # Create man folders which are required by postgres
