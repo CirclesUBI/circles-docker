@@ -7,7 +7,8 @@ TMP_FOLDER=.tmp
 if [ -d "$TMP_FOLDER" ]; then
   cd $TMP_FOLDER
   rm -rf build
-  git pull
+  git fetch --all
+  git reset --hard origin/master
   ./node_modules/.bin/truffle compile
 else
   git clone $REPOSITORY $TMP_FOLDER
@@ -19,7 +20,3 @@ npm install
 
 # Migrate contracts
 ./node_modules/.bin/truffle migrate
-
-# Cleanup
-cd ..
-# rm -rf $TMP_FOLDER
