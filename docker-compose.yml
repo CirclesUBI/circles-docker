@@ -4,8 +4,7 @@ volumes:
   certs:
   conf:
   html:
-  ipfs_data:
-  ipfs_export:
+  ipfs:
   relayer:
   relayer_html:
   vhost.d:
@@ -102,9 +101,25 @@ services:
       - LETSENCRYPT_HOST=${HOST_USERNAME_SERVICE}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
 
-  ipfs-node:
-    image: ipfs/go-ipfs:latest
+  ipfs:
+    image: ipfs/go-ipfs
     container_name: circles-ipfs-node
     volumes:
-      - ipfs_data:/data/ipfs
-      - ipfs_export:/export
+      - ipfs:/data/ipfs
+
+  graph:
+    image: graphprotocol/graph-node
+    container_name: circles-graph-node
+    depends_on:
+      - db
+      - ipfs
+    environment:
+      - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+      - LETSENCRYPT_HOST=${HOST_GRAPH_NODE}
+      - VIRTUAL_HOST=${HOST_GRAPH_NODE}
+      - VIRTUAL_PORT=8000
+      - ipfs=ipfs:5001
+      - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
+      - postgres_host=db:5432
+      - postgres_pass=${POSTGRES_PASSWORD}
+      - postgres_user=${POSTGRES_USER}
