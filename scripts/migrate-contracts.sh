@@ -1,22 +1,22 @@
 #!/bin/bash
 
-REPOSITORY=https://github.com/CirclesUBI/circles-contracts.git
-TMP_FOLDER=.tmp
+source "scripts/common.sh"
 
-# Download or update contracts
-if [ -d "$TMP_FOLDER" ]; then
-  cd $TMP_FOLDER
-  rm -rf build
-  git fetch --all
-  git reset --hard origin/master
-  ./node_modules/.bin/truffle compile
-else
-  git clone $REPOSITORY $TMP_FOLDER
-  cd $TMP_FOLDER
-fi
+REPOSITORY=https://github.com/CirclesUBI/circles-contracts.git
+FOLDER_NAME=contracts
+
+check_tmp_folder $REPOSITORY $FOLDER_NAME
+
+# Clean up
+rm -rf build
+git fetch --all
+git reset --hard origin/master
 
 # Install dependencies
 npm install
+
+# Compile contracts
+./node_modules/.bin/truffle compile
 
 # Migrate contracts
 ./node_modules/.bin/truffle migrate

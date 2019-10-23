@@ -37,5 +37,3 @@ services:
       - db
       - ganache
       - ipfs
-    environment:
-      - ethereum=ganache:http://ganache:8545

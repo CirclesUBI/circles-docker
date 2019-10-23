@@ -28,13 +28,18 @@ make up
 
 # Show container logs
 make logs
-make logs circles-ganache
 
 # Download and migrate contracts
-make migrate
+make contracts
+
+# Create and deploy subgraph
+make subgraph
 
 # Stop all containers
 make down
+
+# Remove temporary files
+make clean
 ```
 
 ## License

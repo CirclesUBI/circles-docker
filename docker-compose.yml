@@ -104,6 +104,8 @@ services:
   ipfs:
     image: ipfs/go-ipfs
     container_name: circles-ipfs-node
+    ports:
+      - "5001:5001"
     volumes:
       - ipfs:/data/ipfs
 
@@ -113,11 +115,14 @@ services:
     depends_on:
       - db
       - ipfs
+    ports:
+      - "8020:8020"
     environment:
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
       - LETSENCRYPT_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_PORT=8000
+      - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
       - ipfs=ipfs:5001
       - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
       - postgres_host=db:5432
