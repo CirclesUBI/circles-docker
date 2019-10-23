@@ -4,6 +4,8 @@ volumes:
   certs:
   conf:
   html:
+  ipfs_data:
+  ipfs_export:
   relayer:
   relayer_html:
   vhost.d:
@@ -99,3 +101,10 @@ services:
       - VIRTUAL_HOST=${HOST_USERNAME_SERVICE}
       - LETSENCRYPT_HOST=${HOST_USERNAME_SERVICE}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+
+  ipfs-node:
+    image: ipfs/go-ipfs:latest
+    container_name: circles-ipfs-node
+    volumes:
+      - ipfs_data:/data/ipfs
+      - ipfs_export:/export
