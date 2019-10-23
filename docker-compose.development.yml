@@ -31,3 +31,9 @@ services:
       "--gasLimit", "10000000",
       "--noVMErrorsOnRPCResponse"
     ]
+
+  graph:
+    depends_on:
+      - db
+      - ganache
+      - ipfs

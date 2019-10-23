@@ -57,6 +57,10 @@ CACHES = {
     }
 }
 
+# Django CORS
+
+CORS_ORIGIN_ALLOW_ALL = True
+
 # SAFE
 
 FIXED_GAS_PRICE = 1

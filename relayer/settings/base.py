@@ -43,10 +43,11 @@ DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 THIRD_PARTY_APPS = [
@@ -66,6 +67,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIDDLEWARE
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -234,7 +236,7 @@ REDIS_URL = env('RELAYER_REDIS_URL', default='redis://localhost:6379/0')
 # ETHEREUM
 
 ETH_HASH_PREFIX = env('ETH_HASH_PREFIX', default='ETH')
-ETHEREUM_NODE_URL = env('ETHEREUM_NODE_URL', default=None)
+ETHEREUM_NODE_URL = env('ETHEREUM_NODE_ENDPOINT', default=None)
 ETHEREUM_TRACING_NODE_URL = env('ETHEREUM_TRACING_NODE_URL', default=ETHEREUM_NODE_URL)
 
 GAS_STATION_NUMBER_BLOCKS = env('GAS_STATION_NUMBER_BLOCKS', default=300)
