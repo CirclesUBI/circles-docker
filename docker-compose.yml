@@ -116,7 +116,10 @@ services:
       - db
       - ipfs
     ports:
+      - "8001:8001"
       - "8020:8020"
+      - "8030:8030"
+      - "8040:8040"
     environment:
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
       - LETSENCRYPT_HOST=${HOST_GRAPH_NODE}
