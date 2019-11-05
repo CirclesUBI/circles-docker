@@ -7,18 +7,14 @@ FOLDER_NAME=subgraph
 
 check_tmp_folder $REPOSITORY $FOLDER_NAME
 
-# @TODO: Remove this when merged to master
-git checkout deployable-subgraph
-
 # Clean up
 rm -rf build src/types
 git fetch --all
-
-# @TODO: Change this when merged to master
-git reset --hard origin/deployable-subgraph
+git reset --hard origin/master
 
 # Install dependencies
-npm install
+echo "Installing npm dependencies .."
+npm install &> /dev/null
 
 # Link to .env file
 ln -s ../../.env .env
