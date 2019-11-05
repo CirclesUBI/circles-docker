@@ -13,7 +13,8 @@ git fetch --all
 git reset --hard origin/master
 
 # Install dependencies
-npm install
+echo "Installing npm dependencies .."
+npm install &> /dev/null
 
 # Compile contracts
 ./node_modules/.bin/truffle compile
