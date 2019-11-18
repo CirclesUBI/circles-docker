@@ -13,8 +13,11 @@ RUN apt-get update \
 # Install and build username service
 RUN git clone https://github.com/CirclesUBI/circles-username-resolver.git app \
       && cd app \
-      && git checkout --quiet ${GIT_COMMIT} \
-      && npm install \
+      && git checkout --quiet ${GIT_COMMIT}
+
+WORKDIR /usr/src/app
+
+RUN npm install \
       && npm run build
 
 # Remove unneeded dependencies
