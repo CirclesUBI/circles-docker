@@ -33,4 +33,4 @@ RUN npm install -g http-server
 
 EXPOSE 8080
 
-CMD http-server --port 8080 --proxy ${APP_BASE_PATH}? -d false
+CMD http-server --port 8080 --proxy http://app:8080? -d false
