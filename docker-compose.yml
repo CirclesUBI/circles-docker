@@ -131,3 +131,13 @@ services:
       - postgres_host=db:5432
       - postgres_pass=${POSTGRES_PASSWORD}
       - postgres_user=${POSTGRES_USER}
+
+  app:
+    build: app
+    container_name: circles-app
+    env_file:
+      - .env
+    environment:
+      - VIRTUAL_HOST=${HOST_APP}
+      - LETSENCRYPT_HOST=${HOST_APP}
+      - LETSENCRYPT_EMAIL=${SSL_EMAIL}
