@@ -1,7 +1,6 @@
 FROM node:11-slim
 
-ENV GIT_COMMIT f0e61f0bde0988ec488f0f2f7e95d235645d9d6e
-
+ENV GIT_COMMIT f5c898ab615c8f4fa1fa6118e08e3b85f3aec9a2
 WORKDIR /usr/src
 
 # Install dependencies
@@ -33,4 +32,4 @@ RUN npm install -g http-server
 
 EXPOSE 8080
 
-CMD http-server --port 8080 --proxy http://app:8080? -d false
+CMD http-server --port 8080 --proxy http://app:8080? -d false --gzip true -c36000000
