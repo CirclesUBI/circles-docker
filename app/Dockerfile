@@ -32,4 +32,4 @@ RUN npm install -g http-server
 
 EXPOSE 8080
 
-CMD http-server --port 8080 --proxy http://app:8080? -d false --gzip true -c36000000
+CMD http-server --port 8080 --proxy http://app:8080? -d false -c36000000
