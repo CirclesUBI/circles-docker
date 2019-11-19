@@ -1,6 +1,6 @@
 FROM node:11-slim
 
-ENV GIT_COMMIT f5c898ab615c8f4fa1fa6118e08e3b85f3aec9a2
+ENV GIT_COMMIT 935dd25fb049db9a23c8a43d39081e44fa909c69
 WORKDIR /usr/src
 
 # Install dependencies
