@@ -9,6 +9,7 @@ Infrastructure provisioning for Circles development and production environments.
 * Edit your `/etc/hosts` file and add the following hostnames (or similar, depending on your `.env` configuration):
 
     ```
+    127.0.1.1 app.circles.local
     127.0.1.1 api.circles.local
     127.0.1.1 graph.circles.local
     127.0.1.1 relay.circles.local
