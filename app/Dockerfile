@@ -1,6 +1,7 @@
 FROM node:11-slim
 
-ENV GIT_COMMIT cb34505fadcb27e7a10fc98db852e0df90ad0da1
+ARG GIT_COMMIT
+
 WORKDIR /usr/src
 
 # Install dependencies
@@ -14,16 +15,19 @@ RUN git clone https://github.com/CirclesUBI/circles-baby-phoenix.git app \
 
 WORKDIR /usr/src/app
 
+# Prepare variables
+COPY .env .
+
 # Install dependencies
 RUN npm install
 
 # Generate static files
-ENV NODE_ENV production
 RUN npm run build
 
 # Clean up
 RUN apt-get purge -y --auto-remove build-essential
 RUN rm -rf node_modules
+RUN rm .env
 
 # Install and run static http-server
 WORKDIR /usr/src/app/build

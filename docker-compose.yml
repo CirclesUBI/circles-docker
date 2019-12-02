@@ -11,7 +11,7 @@ volumes:
 
 services:
   db:
-    image: postgres:11.5-alpine
+    image: postgres:12.1-alpine
     container_name: circles-db
     env_file:
       - .env
@@ -19,7 +19,7 @@ services:
       - ./db/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh
 
   redis:
-    image: redis:5.0.5-alpine
+    image: redis:5.0.7-alpine
     container_name: circles-redis
     env_file:
       - .env
@@ -37,8 +37,6 @@ services:
       - relayer_html:/usr/share/nginx/html/relayer
       - ./app/nginx.conf:/etc/nginx/vhost.d/${HOST_APP}
       - ./relayer/nginx.conf:/etc/nginx/vhost.d/${HOST_RELAYER}
-    labels:
-      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
 
   gen:
     image: jwilder/docker-gen
@@ -55,7 +53,10 @@ services:
     command: -notify-sighup circles-nginx-proxy -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
   relayer-service:
-    build: relayer
+    build:
+      context: ./relayer
+      args:
+        - GIT_COMMIT=3a46853
     container_name: circles-relayer-service
     depends_on:
       - db
@@ -91,7 +92,10 @@ services:
     command: ./run-scheduler.sh
 
   username-service:
-    build: username-service
+    build:
+      context: ./username-service
+      args:
+        - GIT_COMMIT=ee6e3a5
     container_name: circles-username-service
     depends_on:
       - db
