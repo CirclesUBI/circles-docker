@@ -58,3 +58,7 @@ ADMIN_URL = env('DJANGO_ADMIN_URL', default=r'^admin/')
 # GUNICORN
 
 INSTALLED_APPS += ['gunicorn']
+
+# SAFE
+
+SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=6)
