@@ -52,11 +52,11 @@ services:
       - ./nginx-proxy/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
     command: -notify-sighup circles-nginx-proxy -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
-  relayer-service:
+  relayer-service: &relayer-service
     build:
       context: ./relayer
       args:
-        - GIT_COMMIT=58cffed
+        - GIT_COMMIT=0980355
     container_name: circles-relayer-service
     depends_on:
       - db
@@ -76,7 +76,7 @@ services:
     command: ./run.sh
 
   relayer-worker: &relayer-worker
-    build: relayer
+    <<: *relayer-service
     container_name: circles-relayer-worker
     env_file:
       - .env

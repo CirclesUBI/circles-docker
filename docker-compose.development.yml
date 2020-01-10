@@ -1,13 +1,14 @@
 version: '3'
 
 services:
-  relayer-service:
+  relayer-service: &relayer-service
     depends_on:
       - db
       - redis
       - ganache
 
   relayer-worker: &relayer-worker
+    <<: *relayer-service
     depends_on:
       - db
       - ganache
