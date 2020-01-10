@@ -56,7 +56,7 @@ services:
     build:
       context: ./relayer
       args:
-        - GIT_COMMIT=0980355
+        - GIT_COMMIT=dbe34d1
     container_name: circles-relayer-service
     depends_on:
       - db
