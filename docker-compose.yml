@@ -95,7 +95,7 @@ services:
     build:
       context: ./username-service
       args:
-        - GIT_COMMIT=71ae15d
+        - GIT_COMMIT=7b90ae3
     container_name: circles-username-service
     depends_on:
       - db
