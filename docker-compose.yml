@@ -27,6 +27,8 @@ services:
   nginx:
     image: nginx:alpine
     container_name: circles-nginx-proxy
+    depends_on:
+      - db
     ports:
       - "80:80"
     volumes:
