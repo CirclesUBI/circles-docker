@@ -1,7 +1,5 @@
 FROM node:11-slim
 
-ARG GIT_COMMIT
-
 WORKDIR /usr/src
 
 # Install dependencies
@@ -11,7 +9,7 @@ RUN apt-get update \
 # Clone app repository
 RUN git clone https://github.com/CirclesUBI/circles-baby-phoenix.git app \
       && cd app \
-      && git checkout --quiet ${GIT_COMMIT}
+      && git checkout --quiet development
 
 WORKDIR /usr/src/app
 
