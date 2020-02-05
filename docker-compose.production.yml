@@ -29,7 +29,7 @@ services:
       context: .
       dockerfile: app/Dockerfile
       args:
-        - GIT_COMMIT=a5621e7
+        - GIT_COMMIT=0ba9034
     container_name: circles-app
     environment:
       - VIRTUAL_HOST=${HOST_APP}
