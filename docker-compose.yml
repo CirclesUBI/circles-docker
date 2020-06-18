@@ -11,7 +11,7 @@ volumes:
 
 services:
   db:
-    image: postgres:12.1-alpine
+    image: postgres:12.2-alpine
     container_name: circles-db
     env_file:
       - .env
@@ -19,7 +19,7 @@ services:
       - ./db/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh
 
   redis:
-    image: redis:5.0.7-alpine
+    image: redis:6.0.1-alpine
     container_name: circles-redis
     env_file:
       - .env
@@ -109,7 +109,7 @@ services:
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
 
   ipfs:
-    image: ipfs/go-ipfs
+    image: ipfs/go-ipfs:v0.4.23
     container_name: circles-ipfs-node
     ports:
       - "5001:5001"
