@@ -8,6 +8,7 @@ volumes:
   relayer:
   relayer_html:
   vhost.d:
+  513e8c709e86e808549eb1cb0b79db0a20d1fb79d19788d07a3f049a71f2dc5a:
 
 services:
   db:
@@ -17,6 +18,7 @@ services:
       - .env
     volumes:
       - ./db/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh
+      - 513e8c709e86e808549eb1cb0b79db0a20d1fb79d19788d07a3f049a71f2dc5a:/var/lib/postgresql/data
 
   redis:
     image: redis:6.0.1-alpine
