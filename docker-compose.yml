@@ -8,6 +8,7 @@ volumes:
   relayer:
   relayer_html:
   vhost.d:
+  data:
 
 services:
   db:
@@ -17,6 +18,7 @@ services:
       - .env
     volumes:
       - ./db/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh
+      - data:/var/lib/postgresql/data
 
   redis:
     image: redis:6.0.1-alpine
