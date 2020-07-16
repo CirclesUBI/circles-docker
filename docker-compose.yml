@@ -3,12 +3,12 @@ version: '3'
 volumes:
   certs:
   conf:
+  data:
   html:
   ipfs:
   relayer:
   relayer_html:
   vhost.d:
-  data:
 
 services:
   db:
@@ -27,7 +27,7 @@ services:
       - .env
 
   nginx:
-    image: nginx:alpine
+    image: nginx:1.19.1-alpine
     container_name: circles-nginx-proxy
     depends_on:
       - db
@@ -43,7 +43,7 @@ services:
       - ./relayer/nginx.conf:/etc/nginx/vhost.d/${HOST_RELAYER}
 
   gen:
-    image: jwilder/docker-gen
+    image: jwilder/docker-gen:0.7.0
     container_name: circles-nginx-gen
     depends_on:
       - nginx
@@ -95,19 +95,19 @@ services:
     container_name: circles-relayer-scheduler
     command: ./run-scheduler.sh
 
-  username-service:
+  api:
     build:
-      context: ./username-service
+      context: ./api
       args:
         - GIT_COMMIT=52d9c87
-    container_name: circles-username-service
+    container_name: circles-api
     depends_on:
       - db
     env_file:
       - .env
     environment:
-      - VIRTUAL_HOST=${HOST_USERNAME_SERVICE}
-      - LETSENCRYPT_HOST=${HOST_USERNAME_SERVICE}
+      - VIRTUAL_HOST=${HOST_API}
+      - LETSENCRYPT_HOST=${HOST_API}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
 
   ipfs:
