@@ -99,13 +99,14 @@ services:
     build:
       context: ./api
       args:
-        - GIT_COMMIT=aa6cdda
+        - GIT_COMMIT=b4d1604
     container_name: circles-api
     depends_on:
       - db
     env_file:
       - .env
     environment:
+      - GRAPH_NODE_ENDPOINT=${GRAPH_NODE_INTERNAL_ENDPOINT}
       - VIRTUAL_HOST=${HOST_API}
       - LETSENCRYPT_HOST=${HOST_API}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
