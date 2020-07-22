@@ -33,8 +33,34 @@ services:
       "--noVMErrorsOnRPCResponse"
     ]
 
+  ipfs:
+    image: ipfs/go-ipfs:v0.4.23
+    container_name: circles-ipfs-node
+    ports:
+      - "5001:5001"
+    volumes:
+      - ipfs:/data/ipfs
+
   graph:
+    image: graphprotocol/graph-node:v0.18.0
+    container_name: circles-graph-node
     depends_on:
       - db
-      - ganache
       - ipfs
+    ports:
+      - "8001:8001"
+      - "8020:8020"
+      - "8030:8030"
+      - "8040:8040"
+    environment:
+      - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+      - LETSENCRYPT_HOST=${HOST_GRAPH_NODE}
+      - VIRTUAL_HOST=${HOST_GRAPH_NODE}
+      - VIRTUAL_PORT=8000
+      - ETHEREUM_POLLING_INTERVAL=25000
+      - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
+      - ipfs=ipfs:5001
+      - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
+      - postgres_host=db:5432
+      - postgres_pass=${POSTGRES_PASSWORD}
+      - postgres_user=${POSTGRES_USER}
