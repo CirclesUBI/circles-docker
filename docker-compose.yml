@@ -106,7 +106,7 @@ services:
     env_file:
       - .env
     environment:
-      - GRAPH_NODE_ENDPOINT=${GRAPH_NODE_INTERNAL_ENDPOINT}
+      - GRAPH_NODE_ENDPOINT=${GRAPH_NODE_EXTERNAL}
       - VIRTUAL_HOST=${HOST_API}
       - LETSENCRYPT_HOST=${HOST_API}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}

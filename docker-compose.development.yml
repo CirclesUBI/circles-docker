@@ -47,14 +47,13 @@ services:
     depends_on:
       - db
       - ipfs
+      - ganache
     ports:
       - "8001:8001"
       - "8020:8020"
       - "8030:8030"
       - "8040:8040"
     environment:
-      - LETSENCRYPT_EMAIL=${SSL_EMAIL}
-      - LETSENCRYPT_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_PORT=8000
       - ETHEREUM_POLLING_INTERVAL=25000
