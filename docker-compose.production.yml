@@ -32,6 +32,7 @@ services:
         - GIT_COMMIT=8e59940
     container_name: circles-app
     environment:
+      - GRAPH_NODE_ENDPOINT=${GRAPH_NODE_EXTERNAL}
       - VIRTUAL_HOST=${HOST_APP}
       - LETSENCRYPT_HOST=${HOST_APP}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}

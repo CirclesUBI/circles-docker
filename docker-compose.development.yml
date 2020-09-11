@@ -41,6 +41,10 @@ services:
     volumes:
       - ipfs:/data/ipfs
 
+  api:
+    environment:
+      - GRAPH_NODE_ENDPOINT=http://graph:8000
+
   graph:
     image: graphprotocol/graph-node:v0.18.0
     container_name: circles-graph-node
