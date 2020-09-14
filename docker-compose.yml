@@ -39,6 +39,7 @@ services:
       - html:/usr/share/nginx/html
       - vhost.d:/etc/nginx/vhost.d
       - relayer_html:/usr/share/nginx/html/relayer
+      - ./api/nginx.conf:/etc/nginx/vhost.d/${HOST_API}
       - ./app/nginx.conf:/etc/nginx/vhost.d/${HOST_APP}
       - ./relayer/nginx.conf:/etc/nginx/vhost.d/${HOST_RELAYER}
 
