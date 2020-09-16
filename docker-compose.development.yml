@@ -2,6 +2,8 @@ version: '3'
 
 services:
   relayer-service: &relayer-service
+    environment:
+      - GRAPH_NODE_EXTERNAL=http://graph:8000
     depends_on:
       - db
       - redis

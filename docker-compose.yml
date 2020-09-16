@@ -83,8 +83,6 @@ services:
   relayer-worker: &relayer-worker
     <<: *relayer-service
     container_name: circles-relayer-worker
-    env_file:
-      - .env
     depends_on:
       - db
       - redis
