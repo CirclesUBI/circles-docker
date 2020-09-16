@@ -9,7 +9,7 @@ RUN apt-get update \
       && apt-get install -y git python build-essential
 
 # Clone app repository
-RUN git clone https://github.com/CirclesUBI/circles-baby-phoenix.git app \
+RUN git clone https://github.com/CirclesUBI/circles-myxogastria.git app \
       && cd app \
       && git checkout --quiet ${GIT_COMMIT}
 
