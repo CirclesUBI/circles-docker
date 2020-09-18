@@ -1,9 +1,9 @@
-FROM python:3.7-slim
+FROM python:3.8-slim
 
 ARG GIT_COMMIT
 
 ENV PYTHONUNBUFFERED 1
-ENV TINI_VERSION v0.18.0
+ENV TINI_VERSION v0.19.0
 
 # Signal handling for PID1 https://github.com/krallin/tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
@@ -38,6 +38,8 @@ RUN set -ex \
       \( -type d -a -name test -o -name tests \) \
       -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
       -exec rm -rf '{}' +
+
+RUN pip check
 
 EXPOSE 8888
 
