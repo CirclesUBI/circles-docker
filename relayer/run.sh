@@ -10,17 +10,12 @@ python manage.py migrate --noinput
 echo "==> Setup Gas Station..."
 python manage.py setup_gas_station
 
-echo "==> Setup Safe Relay Task..."
-python manage.py setup_safe_relay
+echo "==> $(date +%H:%M:%S) ==> Setting up service... "
+python manage.py setup_service
 
 if [ "${DEPLOY_MASTER_COPY_ON_INIT:-0}" = 1 ]; then
-    echo "==> Deploy Safe master copy..."
-    python manage.py deploy_safe_master_copy
-fi
-
-if [ "${DEPLOY_PROXY_FACTORY_ON_INIT:-0}" = 1 ]; then
-    echo "==> Deploy proxy factory..."
-    python manage.py deploy_proxy_factory
+  echo "==> $(date +%H:%M:%S) ==> Deploy Safe master copy..."
+  python manage.py deploy_safe_contracts
 fi
 
 echo "==> Collecting statics ... "
