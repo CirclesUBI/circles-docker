@@ -29,7 +29,7 @@ services:
       context: .
       dockerfile: app/Dockerfile
       args:
-        - GIT_COMMIT=75d166d
+        - GIT_COMMIT=0ce4b7c
     container_name: circles-app
     environment:
       - GRAPH_NODE_ENDPOINT=${GRAPH_NODE_EXTERNAL}
