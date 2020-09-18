@@ -14,7 +14,7 @@ RUN for i in {1..8}; do mkdir -p "/usr/share/man/man$i"; done
 
 # Install postgres-client
 RUN apt-get update \
-      && apt-get install -y git postgresql-client
+      && apt-get install -y git postgresql-client libpq-dev libxml2-dev libxslt-dev python-dev zlib1g-dev
 
 # Install Safe relay service
 RUN git clone https://github.com/CirclesUBI/safe-relay-service.git \
