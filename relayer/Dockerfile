@@ -31,7 +31,7 @@ RUN set -ex \
       pkg-config \
       " \
       && apt-get install -y --no-install-recommends $buildDeps \
-      && pip install --no-cache-dir -r requirements-dev.txt \
+      && pip install --no-cache-dir -r requirements.txt \
       && apt-get purge -y --auto-remove $buildDeps \
       && rm -rf /var/lib/apt/lists/* \
       && find /usr/local \
