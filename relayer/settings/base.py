@@ -241,44 +241,51 @@ ETHEREUM_TRACING_NODE_URL = env('ETHEREUM_TRACING_NODE_URL', default=ETHEREUM_NO
 
 GAS_STATION_NUMBER_BLOCKS = env('GAS_STATION_NUMBER_BLOCKS', default=300)
 
-# SAFE
-
+# Safe
+# ------------------------------------------------------------------------------
 SAFE_FUNDER_PRIVATE_KEY = env('SAFE_FUNDER_PRIVATE_KEY', default=None)
 
 # Maximum ether (no wei) for a single transaction (security limit)
-SAFE_FUNDER_MAX_ETH = env.int('SAFE_FUNDER_MAX_ETH', default=0.1)
 
+SAFE_FUNDER_MAX_ETH = env.int('SAFE_FUNDER_MAX_ETH', default=0.1)
 SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=0)  # Set to at least 3
 
 # Master Copy Address of Safe Contract
 SAFE_CONTRACT_ADDRESS = env('SAFE_ADDRESS', default='0x' + '0' * 39 + '1')
 
-SAFE_OLD_CONTRACT_ADDRESS = env('SAFE_OLD_CONTRACT_ADDRESS', default='0x' + '0' * 39 + '1')
-
-SAFE_VALID_CONTRACT_ADDRESSES = set(env.list('SAFE_VALID_CONTRACT_ADDRESSES', default=[])) | {SAFE_CONTRACT_ADDRESS, SAFE_OLD_CONTRACT_ADDRESS}
+SAFE_V1_0_0_CONTRACT_ADDRESS = env('SAFE_V1_0_0_CONTRACT_ADDRESS', default='0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A')
+SAFE_V0_0_1_CONTRACT_ADDRESS = env('SAFE_V0_0_1_CONTRACT_ADDRESS', default='0x8942595A2dC5181Df0465AF0D7be08c8f23C93af')
+SAFE_VALID_CONTRACT_ADDRESSES = set(env.list('SAFE_VALID_CONTRACT_ADDRESSES',
+                                             default=['0xaE32496491b53841efb51829d6f886387708F99B',
+                                                      '0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A'
+                                                      '0x8942595A2dC5181Df0465AF0D7be08c8f23C93af',
+                                                      '0xAC6072986E985aaBE7804695EC2d8970Cf7541A2'])
+                                    ) | {SAFE_CONTRACT_ADDRESS,
+                                         SAFE_V1_0_0_CONTRACT_ADDRESS,
+                                         SAFE_V0_0_1_CONTRACT_ADDRESS}
 
 SAFE_PROXY_FACTORY_ADDRESS = env('PROXY_FACTORY_ADDRESS', default='0x' + '0' * 39 + '2')
 
+SAFE_PROXY_FACTORY_V1_0_0_ADDRESS = env('SAFE_PROXY_FACTORY_V1_0_0_ADDRESS',
+                                        default='0x12302fE9c02ff50939BaAaaf415fc226C078613C')
+SAFE_DEFAULT_CALLBACK_HANDLER = env('SAFE_DEFAULT_CALLBACK_HANDLER',
+                                    default='0xd5D82B6aDDc9027B22dCA772Aa68D5d74cdBdF44')
+
 # If FIXED_GAS_PRICE is None, GasStation will be used
 FIXED_GAS_PRICE = env.int('FIXED_GAS_PRICE', default=None)
-
 SAFE_TX_SENDER_PRIVATE_KEY = env('SAFE_TX_SENDER_PRIVATE_KEY', default=None)
 
 SAFE_CHECK_DEPLOYER_FUNDED_DELAY = env.int('SAFE_CHECK_DEPLOYER_FUNDED_DELAY', default=1 * 30)
-
 SAFE_CHECK_DEPLOYER_FUNDED_RETRIES = env.int('SAFE_CHECK_DEPLOYER_FUNDED_RETRIES', default=10)
-
 SAFE_FIXED_CREATION_COST = env.int('SAFE_FIXED_CREATION_COST', default=None)
-
 SAFE_ACCOUNTS_BALANCE_WARNING = env.int('SAFE_ACCOUNTS_BALANCE_WARNING', default=200000000000000000)  # 0.2 Eth
+SAFE_TX_NOT_MINED_ALERT_MINUTES = env('SAFE_TX_NOT_MINED_ALERT_MINUTES', default=10)
 
 NOTIFICATION_SERVICE_URI = env('NOTIFICATION_SERVICE_URI', default=None)
 NOTIFICATION_SERVICE_PASS = env('NOTIFICATION_SERVICE_PASS', default=None)
 
 TOKEN_LOGO_BASE_URI = env('TOKEN_LOGO_BASE_URI', default='')
 TOKEN_LOGO_EXTENSION = env('TOKEN_LOGO_EXTENSION', default='.png')
-
-INTERNAL_TXS_BLOCK_PROCESS_LIMIT = env('INTERNAL_TXS_BLOCK_PROCESS_LIMIT', default=100000)
 
 # CIRCLES
 
