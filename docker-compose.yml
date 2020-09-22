@@ -98,7 +98,7 @@ services:
     build:
       context: ./api
       args:
-        - GIT_COMMIT=fa03eda
+        - GIT_COMMIT=a3d753d
     container_name: circles-api
     depends_on:
       - db
