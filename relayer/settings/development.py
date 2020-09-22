@@ -1,5 +1,3 @@
-import socket
-
 from .base import *
 from .base import env
 

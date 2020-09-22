@@ -1,4 +1,5 @@
 import environ
+import socket
 
 ROOT_DIR = environ.Path(__file__) - 3 # (safe_relay_service/config/settings/base.py - 3 = safe-relay-service/)
 APPS_DIR = ROOT_DIR.path('safe_relay_service')
