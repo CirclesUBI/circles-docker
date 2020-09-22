@@ -13,15 +13,6 @@ ALLOWED_HOSTS = [
     env('HOST_RELAYER', default='localhost'),
 ]
 
-# CACHES
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': ''
-    }
-}
-
 # DJANGO DEBUG TOOLBAR
 
 INSTALLED_APPS += ['debug_toolbar']
@@ -36,26 +27,9 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TEMPLATE_CONTEXT': True,
 }
 
-INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
-
 # CELERY
 
 CELERY_ALWAYS_EAGER = False
-
-hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-
-INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('RELAYER_REDIS_URL'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'IGNORE_EXCEPTIONS': True,
-        }
-    }
-}
 
 # Django CORS
 

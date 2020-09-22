@@ -248,7 +248,7 @@ SAFE_FUNDER_PRIVATE_KEY = env('SAFE_FUNDER_PRIVATE_KEY', default=None)
 # Maximum ether (no wei) for a single transaction (security limit)
 
 SAFE_FUNDER_MAX_ETH = env.int('SAFE_FUNDER_MAX_ETH', default=0.1)
-SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=0)  # Set to at least 3
+SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=3)  # Set to at least 3
 
 # Master Copy Address of Safe Contract
 SAFE_CONTRACT_ADDRESS = env('SAFE_ADDRESS', default='0x' + '0' * 39 + '1')
@@ -287,6 +287,19 @@ NOTIFICATION_SERVICE_PASS = env('NOTIFICATION_SERVICE_PASS', default=None)
 TOKEN_LOGO_BASE_URI = env('TOKEN_LOGO_BASE_URI', default='')
 TOKEN_LOGO_EXTENSION = env('TOKEN_LOGO_EXTENSION', default='.png')
 
+# CACHES
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': env('RELAYER_REDIS_URL'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'IGNORE_EXCEPTIONS': True,
+        }
+    }
+}
+
 # CIRCLES
 
 CIRCLES_HUB_ADDRESS = env('HUB_ADDRESS', default='0x' + '0' * 39 + '2')
@@ -295,3 +308,9 @@ GRAPH_NODE_EXTERNAL = env('GRAPH_NODE_EXTERNAL', default='')
 SUBGRAPH_NAME = env('SUBGRAPH_NAME', default='')
 
 MIN_TRUST_CONNECTIONS = env('MIN_TRUST_CONNECTIONS', default=3)
+
+# DOCKER
+
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
+INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
