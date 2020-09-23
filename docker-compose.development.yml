@@ -23,6 +23,7 @@ services:
   ganache:
     image: trufflesuite/ganache-cli:latest
     container_name: circles-ganache
+    restart: unless-stopped
     ports:
       - "8545:8545"
     command: [
@@ -38,6 +39,7 @@ services:
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
     container_name: circles-ipfs-node
+    restart: unless-stopped
     ports:
       - "5001:5001"
     volumes:
@@ -50,6 +52,7 @@ services:
   graph:
     image: graphprotocol/graph-node:v0.18.0
     container_name: circles-graph-node
+    restart: unless-stopped
     depends_on:
       - db
       - ipfs
