@@ -11,6 +11,7 @@ services:
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion:v1.13
     container_name: circles-letsencrypt
+    restart: unless-stopped
     depends_on:
       - nginx
       - gen
@@ -29,8 +30,9 @@ services:
       context: .
       dockerfile: app/Dockerfile
       args:
-        - GIT_COMMIT=cf17945
+        - GIT_COMMIT=07dff9d
     container_name: circles-app
+    restart: unless-stopped
     environment:
       - GRAPH_NODE_ENDPOINT=${GRAPH_NODE_EXTERNAL}
       - VIRTUAL_HOST=${HOST_APP}

@@ -4,24 +4,16 @@ from .base import env
 # GENERAL
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['circles.garden'])
+
+ALLOWED_HOSTS = [
+    'relayer-service',
+    env('HOST_RELAYER', default='localhost'),
+    env('DJANGO_ALLOWED_HOSTS', default='circles.garden')
+]
 
 # DATABASES
 
 DATABASES['default']['ATOMIC_REQUESTS'] = False
-
-# CACHES
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('RELAYER_REDIS_URL'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'IGNORE_EXCEPTIONS': True,
-        }
-    }
-}
 
 # SECURITY
 
@@ -59,6 +51,11 @@ ADMIN_URL = env('DJANGO_ADMIN_URL', default=r'^admin/')
 
 INSTALLED_APPS += ['gunicorn']
 
+# Django CORS
+
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
+
 # SAFE
 
-SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=6)
+SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=3)
+FIXED_GAS_PRICE = env.int('FIXED_GAS_PRICE', default=1)
