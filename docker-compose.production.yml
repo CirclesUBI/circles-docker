@@ -30,7 +30,7 @@ services:
       context: .
       dockerfile: app/Dockerfile
       args:
-        - GIT_COMMIT=287cb98
+        - GIT_COMMIT=156f3d6
     container_name: circles-app
     restart: unless-stopped
     environment:
