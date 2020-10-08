@@ -34,4 +34,4 @@ COPY wait-for-db.sh .
 
 RUN chmod +x *.sh
 
-ENTRYPOINT ["./wait-for-db.sh", "--"]
+ENTRYPOINT ["./wait-for-db.sh"]

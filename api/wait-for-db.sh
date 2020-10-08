@@ -11,4 +11,7 @@ done
 
 >&2 echo "Database is ready!"
 
+export DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DATABASE_API
+export DATABASE_DIALECT=postgres
+
 exec $CMD
