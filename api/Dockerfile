@@ -29,6 +29,9 @@ WORKDIR /usr/src/app
 EXPOSE 3000
 
 COPY run.sh .
-RUN chmod +x run.sh
+COPY run-worker.sh .
+COPY wait-for-db.sh .
 
-ENTRYPOINT ["./run.sh"]
+RUN chmod +x *.sh
+
+ENTRYPOINT ["./wait-for-db.sh", "--"]
