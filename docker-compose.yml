@@ -65,7 +65,7 @@ services:
     build:
       context: ./relayer
       args:
-        - GIT_COMMIT=4bf5354
+        - GIT_COMMIT=8cae374
     container_name: circles-relayer-service
     restart: unless-stopped
     depends_on:
@@ -99,11 +99,11 @@ services:
     container_name: circles-relayer-scheduler
     command: ./run-scheduler.sh
 
-  api:
+  api: &api
     build:
       context: ./api
       args:
-        - GIT_COMMIT=24f8804
+        - GIT_COMMIT=80a1fca
     container_name: circles-api
     restart: unless-stopped
     depends_on:
@@ -114,3 +114,11 @@ services:
       - VIRTUAL_HOST=${HOST_API}
       - LETSENCRYPT_HOST=${HOST_API}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+    command: ./run.sh
+
+  api-worker:
+    <<: *api
+    container_name: circles-api-worker
+    depends_on:
+      - api
+    command: ./run-worker.sh

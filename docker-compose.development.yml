@@ -45,9 +45,14 @@ services:
     volumes:
       - ipfs:/data/ipfs
 
-  api:
+  api: &api
+    depends_on:
+      - graph
     environment:
       - GRAPH_NODE_ENDPOINT=http://graph:8000
+
+  api-worker:
+    <<: *api
 
   graph:
     image: graphprotocol/graph-node:v0.18.0
