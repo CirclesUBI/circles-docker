@@ -254,23 +254,19 @@ SAFE_FUNDING_CONFIRMATIONS = env.int('SAFE_FUNDING_CONFIRMATIONS', default=3)  #
 # Master Copy Address of Safe Contract
 SAFE_CONTRACT_ADDRESS = env('SAFE_ADDRESS', default='0x' + '0' * 39 + '1')
 
-SAFE_V1_0_0_CONTRACT_ADDRESS = env('SAFE_V1_0_0_CONTRACT_ADDRESS', default='0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A')
-SAFE_V0_0_1_CONTRACT_ADDRESS = env('SAFE_V0_0_1_CONTRACT_ADDRESS', default='0x8942595A2dC5181Df0465AF0D7be08c8f23C93af')
+SAFE_V1_0_0_CONTRACT_ADDRESS = env('SAFE_ADDRESS', default='0x' + '0' * 39 + '1')
+SAFE_V0_0_1_CONTRACT_ADDRESS = env('SAFE_ADDRESS', default='0x' + '0' * 39 + '1')
 SAFE_VALID_CONTRACT_ADDRESSES = set(env.list('SAFE_VALID_CONTRACT_ADDRESSES',
-                                             default=['0xaE32496491b53841efb51829d6f886387708F99B',
-                                                      '0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A'
-                                                      '0x8942595A2dC5181Df0465AF0D7be08c8f23C93af',
-                                                      '0xAC6072986E985aaBE7804695EC2d8970Cf7541A2'])
+                                             default=['0x' + '0' * 39 + '1'])
                                     ) | {SAFE_CONTRACT_ADDRESS,
                                          SAFE_V1_0_0_CONTRACT_ADDRESS,
                                          SAFE_V0_0_1_CONTRACT_ADDRESS}
 
 SAFE_PROXY_FACTORY_ADDRESS = env('PROXY_FACTORY_ADDRESS', default='0x' + '0' * 39 + '2')
 
-SAFE_PROXY_FACTORY_V1_0_0_ADDRESS = env('SAFE_PROXY_FACTORY_V1_0_0_ADDRESS',
-                                        default='0x12302fE9c02ff50939BaAaaf415fc226C078613C')
+SAFE_PROXY_FACTORY_V1_0_0_ADDRESS = env('PROXY_FACTORY_ADDRESS', default='0x' + '0' * 39 + '2')
 SAFE_DEFAULT_CALLBACK_HANDLER = env('SAFE_DEFAULT_CALLBACK_HANDLER',
-                                    default='0xd5D82B6aDDc9027B22dCA772Aa68D5d74cdBdF44')
+                                    default='0x' + '0' * 39 + '3')
 
 # If FIXED_GAS_PRICE is None, GasStation will be used
 FIXED_GAS_PRICE = env.int('FIXED_GAS_PRICE', default=None)
