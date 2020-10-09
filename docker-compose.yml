@@ -124,7 +124,7 @@ services:
     depends_on:
       - db
     environment: 
-      - CRON_SCHEDULE=5 * * * *
+      - CRON_SCHEDULE=0 0 * * *
       - DB_HOST=db
       - DB_PASS=${POSTGRES_PASSWORD}
       - DB_USER=${POSTGRES_USER}
