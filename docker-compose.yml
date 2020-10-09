@@ -103,7 +103,7 @@ services:
     build:
       context: ./api
       args:
-        - GIT_COMMIT=80a1fca
+        - GIT_COMMIT=2c19652
     container_name: circles-api
     restart: unless-stopped
     depends_on:
