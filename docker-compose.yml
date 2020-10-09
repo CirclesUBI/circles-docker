@@ -114,3 +114,22 @@ services:
       - VIRTUAL_HOST=${HOST_API}
       - LETSENCRYPT_HOST=${HOST_API}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+
+  backups: 
+    build:
+      context: ./backups
+      dockerfile: Dockerfile
+    container_name: circles-backups
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment: 
+      - CRON_SCHEDULE=5 * * * *
+      - DB_HOST=db
+      - DB_PASS=${POSTGRES_PASSWORD}
+      - DB_USER=${POSTGRES_USER}
+      - DB_NAMES=${POSTGRES_DATABASE_API},${POSTGRES_DATABASE_GRAPH_NODE},${POSTGRES_DATABASE_RELAYER}
+      - S3_PATH=s3://${AWS_S3_BACKUP_BUCKET}
+      - AWS_DEFAULT_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
