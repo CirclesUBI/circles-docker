@@ -122,3 +122,4 @@ services:
     depends_on:
       - api
     command: ./run-worker.sh
+
