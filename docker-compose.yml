@@ -65,7 +65,7 @@ services:
     build:
       context: ./relayer
       args:
-        - GIT_COMMIT=8cae374
+        - GIT_COMMIT=2003c49
     container_name: circles-relayer-service
     restart: unless-stopped
     depends_on:
