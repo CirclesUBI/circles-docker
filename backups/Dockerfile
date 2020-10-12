@@ -8,8 +8,6 @@ RUN apk update && apk add --no-cache --virtual .build-deps && apk add \
 # Install aws-cli
 RUN apk -Uuv add groff less python3 && pip3 install --upgrade pip setuptools awscli 
 
-RUN ln -fs ] usr/bin/python3 python
-
 VOLUME ["/data/backups"]
 
 ENV BACKUP_DIR /data/backups
