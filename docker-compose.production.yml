@@ -30,7 +30,7 @@ services:
       context: .
       dockerfile: app/Dockerfile
       args:
-        - GIT_COMMIT=f569607
+        - GIT_COMMIT=c97c633
     container_name: circles-app
     restart: unless-stopped
     environment:
@@ -39,7 +39,7 @@ services:
       - LETSENCRYPT_HOST=${HOST_APP}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
 
-  backups: 
+  backups:
     build:
       context: ./backups
       dockerfile: Dockerfile
@@ -47,7 +47,7 @@ services:
     restart: unless-stopped
     depends_on:
       - db
-    environment: 
+    environment:
       - CRON_SCHEDULE=0 0 * * *
       - DB_HOST=db
       - DB_PASS=${POSTGRES_PASSWORD}
