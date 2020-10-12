@@ -11,7 +11,7 @@ up: ## Start containers in background
 	$(COMPOSE) up -d
 
 down: ## Stop containers
-	$(COMPOSE) down
+	$(COMPOSE) down --remove-orphans
 
 logs: ## Follow container logs
 	$(COMPOSE) logs -f --tail 100
