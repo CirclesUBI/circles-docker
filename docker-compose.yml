@@ -114,6 +114,7 @@ services:
       - VIRTUAL_HOST=${HOST_API}
       - LETSENCRYPT_HOST=${HOST_API}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+    command: ./run.sh
 
   api-worker:
     <<: *api
