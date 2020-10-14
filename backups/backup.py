@@ -71,7 +71,7 @@ def main():
     upload_backup()
     log("Pruning local backup copies")
     prune_local_backup_files()
-    
+
     if MAIL_TO and MAIL_FROM:
         log("Sending mail to %s" % MAIL_TO)
         send_email(
@@ -80,11 +80,11 @@ def main():
             "Backup complete: %s" % DB_NAME,
             "Took %.2f seconds" % (datetime.now() - start_time).total_seconds(),
         )
-    
+
     if WEBHOOK:
         log("Making HTTP %s request to webhook: %s" % (WEBHOOK_METHOD, WEBHOOK))
         cmd("curl -X %s %s" % (WEBHOOK_METHOD, WEBHOOK))
-    
+
     log("Backup complete, took %.2f seconds" % (datetime.now() - start_time).total_seconds())
 
 
