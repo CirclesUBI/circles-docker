@@ -114,6 +114,7 @@ services:
       - VIRTUAL_HOST=${HOST_API}
       - LETSENCRYPT_HOST=${HOST_API}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+      - GRAPH_NODE_ENDPOINT=http://graph:8000
     command: ./run.sh
 
   api-worker:
@@ -135,7 +136,7 @@ services:
       - ipfs:/data/ipfs
 
   graph:
-    image: graphprotocol/graph-node:v0.18.0
+    image: graphprotocol/graph-node:v0.19.0
     container_name: circles-graph-node
     restart: unless-stopped
     depends_on:
@@ -147,10 +148,10 @@ services:
       - "8030:8030"
       - "8040:8040"
     environment:
-      - VIRTUAL_HOST=${HOST_GRAPH_NODE}
-      - VIRTUAL_PORT=8000
       - LETSENCRYPT_HOST=${HOST_GRAPH_NODE}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+      - VIRTUAL_HOST=${HOST_GRAPH_NODE}
+      - VIRTUAL_PORT=8000
       - ETHEREUM_POLLING_INTERVAL=25000
       - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
       - ipfs=ipfs:5001
