@@ -1,5 +1,8 @@
 version: '3'
 
+volumes:
+  backups:
+
 services:
   nginx:
     ports:
@@ -39,16 +42,19 @@ services:
       - LETSENCRYPT_HOST=${HOST_APP}
       - LETSENCRYPT_EMAIL=${SSL_EMAIL}
 
-  backups:
+  backup:
     build:
-      context: ./backups
+      context: ./backup
       dockerfile: Dockerfile
-    container_name: circles-backups
+    container_name: circles-backup
     restart: unless-stopped
     depends_on:
       - db
+    volumes:
+      - backups:/data/backups
     environment:
       - CRON_SCHEDULE=0 0 * * *
+      - BACKUP_DIR=/data/backups
       - DB_HOST=db
       - DB_PASS=${POSTGRES_PASSWORD}
       - DB_USER=${POSTGRES_USER}

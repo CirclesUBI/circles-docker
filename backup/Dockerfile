@@ -7,10 +7,6 @@ RUN apk update && apk add --no-cache --virtual .build-deps && apk add \
 # Install aws-cli
 RUN apk -Uuv add groff less python3 && pip3 install --upgrade pip setuptools awscli
 
-VOLUME ["/data/backups"]
-
-ENV BACKUP_DIR /data/backups
-
 COPY . /backup
 RUN chmod +x /backup/*.sh
 
