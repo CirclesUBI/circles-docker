@@ -75,6 +75,7 @@ services:
     env_file:
       - .env
     environment:
+      - C_FORCE_ROOT=true
       - DEPLOY_MASTER_COPY_ON_INIT=0
       - DEPLOY_PROXY_FACTORY_ON_INIT=0
       - VIRTUAL_HOST=${HOST_RELAYER}
