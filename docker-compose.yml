@@ -154,7 +154,7 @@ services:
       - VIRTUAL_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_PORT=8000
       - ETHEREUM_POLLING_INTERVAL=25000
-      - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
+      - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ARCHIVE_ENDPOINT}
       - ipfs=ipfs:5001
       - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
       - postgres_host=db:5432
