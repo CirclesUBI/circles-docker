@@ -5,4 +5,4 @@ export NODE_ENV=production
 npm run db:migrate
 npm run db:seed
 
-node ./build/index.js
+pm2-runtime ./build/index.js -i 2

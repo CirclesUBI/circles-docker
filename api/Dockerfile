@@ -19,6 +19,7 @@ RUN git clone https://github.com/CirclesUBI/circles-api.git app \
 WORKDIR /usr/src/app
 
 RUN npm install \
+      && npm install -g pm2@latest \
       && npm run build
 
 # Remove unneeded dependencies
