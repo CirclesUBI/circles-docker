@@ -10,7 +10,8 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 # Clean up
 rm -rf build src/types
 git fetch --all
-git reset --hard origin/master
+git reset --hard e2dd1a0
+# git reset --hard origin/master
 
 # Install dependencies
 echo "Installing npm dependencies .."
