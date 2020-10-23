@@ -71,7 +71,8 @@ services:
     command: -notify-sighup circles-nginx-proxy -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
   relayer-service: &relayer-service
-    build: https://github.com/CirclesUBI/safe-relay-service.git#v4.0.12
+    build:
+      context: https://github.com/CirclesUBI/safe-relay-service.git#v4.0.12
     container_name: circles-relayer-service
     depends_on:
       - db
@@ -89,7 +90,7 @@ services:
       - POSTGRES_PORT=5432
       - C_FORCE_ROOT=true
       - DJANGO_SECRET_KEY=development
-      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - DJANGO_SETTINGS_MODULE=config.settings.development
     volumes:
       - relayer:/nginx
       - relayer_html:/usr/share/nginx/html/relayer
@@ -111,7 +112,8 @@ services:
     command: ./run-scheduler.sh
 
   api: &api
-    build: https://github.com/CirclesUBI/circles-api.git#v1.1.13
+    build:
+      context: https://github.com/CirclesUBI/circles-api.git#v1.1.13
     container_name: circles-api
     depends_on:
       - db
