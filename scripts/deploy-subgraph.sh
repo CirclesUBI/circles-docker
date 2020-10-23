@@ -18,6 +18,8 @@ npm install &> /dev/null
 
 # Link to .env file
 ln -s ../../.env .env
+export IPFS_NODE_ENDPOINT=http://localhost:5001
+export GRAPH_NODE_ENDPOINT=http://localhost:8020
 
 # Prepare subgraph
 npm run codegen
@@ -25,4 +27,4 @@ npm run build
 
 # Create and deploy subgraph to node
 npm run create
-IPFS_NODE_ENDPOINT=http://localhost:5001 GRAPH_NODE_ENDPOINT=http://localhost:8020 npm run deploy
+npm run deploy
