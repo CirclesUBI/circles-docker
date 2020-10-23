@@ -14,6 +14,8 @@ services:
   db:
     image: postgres:12.2-alpine
     container_name: circles-db
+    ports:
+      - "5432:5432"
     restart: unless-stopped
     env_file:
       - .env
@@ -104,7 +106,7 @@ services:
     build:
       context: ./api
       args:
-        - GIT_COMMIT=9e99219
+        - GIT_COMMIT=3125331
     container_name: circles-api
     restart: unless-stopped
     depends_on:
@@ -121,6 +123,10 @@ services:
   api-worker:
     <<: *api
     container_name: circles-api-worker
+    environment:
+      - REDIS_URL=${API_REDIS_URL}
+      - GRAPH_NODE_ENDPOINT=http://graph:8000
+      - WORKER=true
     depends_on:
       - db
       - api
