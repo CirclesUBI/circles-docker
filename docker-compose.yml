@@ -1,7 +1,6 @@
 version: '3'
 
 volumes:
-  certs:
   conf:
   data:
   html:
@@ -16,7 +15,6 @@ services:
     container_name: circles-db
     ports:
       - "5432:5432"
-    restart: unless-stopped
     env_file:
       - .env
     volumes:
@@ -26,36 +24,45 @@ services:
   redis:
     image: redis:6.0.1-alpine
     container_name: circles-redis
-    restart: unless-stopped
-    env_file:
-      - .env
+    ports:
+      - "6379:6379"
+
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    container_name: circles-ganache
+    ports:
+      - "8545:8545"
+    command: [
+      "--deterministic",
+      "--networkId", "5777",
+      "--hostname", "0.0.0.0",
+      "--accounts", "10",
+      "--defaultBalanceEther", "10000",
+      "--gasLimit", "10000000",
+      "--noVMErrorsOnRPCResponse"
+    ]
 
   nginx:
     image: nginx:1.19.1-alpine
     container_name: circles-nginx-proxy
-    restart: unless-stopped
     depends_on:
       - db
     ports:
       - "80:80"
     volumes:
-      - certs:/etc/nginx/certs
       - conf:/etc/nginx/conf.d
       - html:/usr/share/nginx/html
       - vhost.d:/etc/nginx/vhost.d
       - relayer_html:/usr/share/nginx/html/relayer
       - ./api/nginx.conf:/etc/nginx/vhost.d/${HOST_API}
-      - ./app/nginx.conf:/etc/nginx/vhost.d/${HOST_APP}
       - ./relayer/nginx.conf:/etc/nginx/vhost.d/${HOST_RELAYER}
 
   gen:
     image: jwilder/docker-gen:0.7.0
     container_name: circles-nginx-gen
-    restart: unless-stopped
     depends_on:
       - nginx
     volumes:
-      - certs:/etc/nginx/certs
       - conf:/etc/nginx/conf.d
       - html:/usr/share/nginx/html
       - vhost.d:/etc/nginx/vhost.d
@@ -64,25 +71,25 @@ services:
     command: -notify-sighup circles-nginx-proxy -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
   relayer-service: &relayer-service
-    build:
-      context: ./relayer
-      args:
-        - GIT_COMMIT=6faa547
+    build: https://github.com/CirclesUBI/safe-relay-service.git#v4.0.12
     container_name: circles-relayer-service
-    restart: unless-stopped
     depends_on:
       - db
+      - ganache
       - redis
     working_dir: /safe-relay-service
     env_file:
       - .env
     environment:
-      - C_FORCE_ROOT=true
-      - DEPLOY_MASTER_COPY_ON_INIT=0
-      - DEPLOY_PROXY_FACTORY_ON_INIT=0
       - VIRTUAL_HOST=${HOST_RELAYER}
-      - LETSENCRYPT_HOST=${HOST_RELAYER}
-      - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+      - GRAPH_NODE_EXTERNAL=http://graph:8000
+      - RELAYER_REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - C_FORCE_ROOT=true
+      - DJANGO_SECRET_KEY=development
+      - DJANGO_SETTINGS_MODULE=config.settings.production
     volumes:
       - relayer:/nginx
       - relayer_html:/usr/share/nginx/html/relayer
@@ -93,6 +100,7 @@ services:
     container_name: circles-relayer-worker
     depends_on:
       - db
+      - ganache
       - redis
       - relayer-service
     command: ./run-worker.sh
@@ -103,30 +111,25 @@ services:
     command: ./run-scheduler.sh
 
   api: &api
-    build:
-      context: ./api
-      args:
-        - GIT_COMMIT=3125331
+    build: https://github.com/CirclesUBI/circles-api.git#v1.1.13
     container_name: circles-api
-    restart: unless-stopped
     depends_on:
       - db
     env_file:
       - .env
     environment:
       - VIRTUAL_HOST=${HOST_API}
-      - LETSENCRYPT_HOST=${HOST_API}
-      - LETSENCRYPT_EMAIL=${SSL_EMAIL}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - API_SERVICE_ENDPOINT=http://api:3000
       - GRAPH_NODE_ENDPOINT=http://graph:8000
+      - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
     command: ./run.sh
 
   api-worker:
     <<: *api
     container_name: circles-api-worker
-    environment:
-      - REDIS_URL=${API_REDIS_URL}
-      - GRAPH_NODE_ENDPOINT=http://graph:8000
-      - WORKER=true
     depends_on:
       - db
       - api
@@ -136,7 +139,6 @@ services:
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
     container_name: circles-ipfs-node
-    restart: unless-stopped
     ports:
       - "5001:5001"
     volumes:
@@ -145,7 +147,6 @@ services:
   graph:
     image: graphprotocol/graph-node:v0.19.0
     container_name: circles-graph-node
-    restart: unless-stopped
     depends_on:
       - db
       - ipfs
@@ -155,12 +156,9 @@ services:
       - "8030:8030"
       - "8040:8040"
     environment:
-      - LETSENCRYPT_HOST=${HOST_GRAPH_NODE}
-      - LETSENCRYPT_EMAIL=${SSL_EMAIL}
       - VIRTUAL_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_PORT=8000
-      - ETHEREUM_POLLING_INTERVAL=25000
-      - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ARCHIVE_ENDPOINT}
+      - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
       - ipfs=ipfs:5001
       - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
       - postgres_host=db:5432

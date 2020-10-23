@@ -10,8 +10,7 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 # Clean up
 rm -rf build src/types
 git fetch --all
-git reset --hard e2dd1a0
-# git reset --hard origin/master
+git reset --hard origin/main
 
 # Install dependencies
 echo "Installing npm dependencies .."
@@ -26,4 +25,4 @@ npm run build
 
 # Create and deploy subgraph to node
 npm run create
-npm run deploy
+IPFS_NODE_ENDPOINT=http://localhost:5001 GRAPH_NODE_ENDPOINT=http://localhost:8020 npm run deploy

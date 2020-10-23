@@ -1,15 +1,14 @@
 # circles-docker
 
-Infrastructure provisioning for Circles development and production environments.
+Infrastructure provisioning for Circles development.
 
 ## Setup
 
-* Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs.
+* Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs. The default values should be sufficient if you only need a Circles backend during client development.
 
 * Edit your `/etc/hosts` file and add the following hostnames (or similar, depending on your `.env` configuration):
 
     ```
-    127.0.1.1 app.circles.local
     127.0.1.1 api.circles.local
     127.0.1.1 graph.circles.local
     127.0.1.1 relay.circles.local
@@ -20,9 +19,6 @@ Infrastructure provisioning for Circles development and production environments.
 ```
 # Build all docker containers
 make build
-
-# .. use production environment
-ENV=production make build
 
 # Start containers
 make up
@@ -41,6 +37,15 @@ make down
 
 # Remove temporary files
 make clean
+
+# Convenient full-reset during development
+make down \
+    && docker container prune -f \
+    && docker volume prune -f \
+    && make build \
+    && make up \
+    && make contracts \
+    && make subgraph
 ```
 
 ## License
