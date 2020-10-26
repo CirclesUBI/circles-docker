@@ -4,7 +4,7 @@ services:
   relayer-service: &relayer-service
     build: ../safe-relay-service
     volumes:
-      - "../safe-relay-service/safe-relay-service:/safe-relay-service/safe-relay-service"
+      - "../safe-relay-service/safe_relay_service:/safe-relay-service/safe_relay_service"
 
   relayer-worker: &relayer-worker
     <<: *relayer-service
