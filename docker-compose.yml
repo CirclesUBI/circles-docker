@@ -5,6 +5,7 @@ volumes:
   data:
   html:
   ipfs:
+  pathfinder:
   relayer:
   relayer_html:
   vhost.d:
@@ -124,7 +125,9 @@ services:
       - API_SERVICE_ENDPOINT=http://api:3000
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
-    command: "./run.sh"
+    volumes:
+      - pathfinder:/usr/src/app/pathfinder
+    command: "npm run serve"
 
   api-worker:
     <<: *api
@@ -133,7 +136,7 @@ services:
       - db
       - api
       - graph
-    command: "./run-worker.sh"
+    command: "npm run worker:serve"
 
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
