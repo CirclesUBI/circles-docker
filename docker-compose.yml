@@ -13,8 +13,6 @@ services:
   db:
     image: postgres:12.2-alpine
     container_name: circles-db
-    ports:
-      - "5432:5432"
     env_file:
       - .env
     volumes:
@@ -24,8 +22,6 @@ services:
   redis:
     image: redis:6.0.1-alpine
     container_name: circles-redis
-    ports:
-      - "6379:6379"
 
   ganache:
     image: trufflesuite/ganache-cli:latest
@@ -141,22 +137,15 @@ services:
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
     container_name: circles-ipfs-node
-    ports:
-      - "5001:5001"
     volumes:
       - ipfs:/data/ipfs
 
   graph:
-    image: graphprotocol/graph-node:v0.19.0
+    image: graphprotocol/graph-node:v0.19.2
     container_name: circles-graph-node
     depends_on:
       - db
       - ipfs
-    ports:
-      - "8001:8001"
-      - "8020:8020"
-      - "8030:8030"
-      - "8040:8040"
     environment:
       - VIRTUAL_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_PORT=8000
@@ -166,3 +155,18 @@ services:
       - postgres_host=db:5432
       - postgres_pass=${POSTGRES_PASSWORD}
       - postgres_user=${POSTGRES_USER}
+
+  subgraph:
+    build:
+      context: https://github.com/CirclesUBI/circles-subgraph.git#v0.1.10
+    container_name: circles-subgraph
+    depends_on:
+      - graph
+    env_file:
+      - .env
+    environment:
+      - GRAPH_NODE_ENDPOINT=http://graph:8020
+      - IPFS_NODE_ENDPOINT=http://ipfs:5001
+      - ACCESS_TOKEN=secret
+      - IS_DEBUG=true
+    command: ./run.sh
