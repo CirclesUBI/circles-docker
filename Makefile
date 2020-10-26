@@ -1,5 +1,7 @@
+ENV ?= frontend
+
 # Common docker-compose method and arguments
-COMPOSE = docker-compose -f docker-compose.yml -p circles
+COMPOSE = docker-compose -f docker-compose.yml -f docker-compose.$(ENV).yml -p circles
 
 # Tasks
 build: ## Build containers
@@ -17,10 +19,13 @@ logs: ## Follow container logs
 contracts: ## Download and migrate contracts
 	./scripts/migrate-contracts.sh
 
+subgraph: ## Create and deploy subgraph
+	./scripts/deploy-subgraph.sh
+
 clean: ## Remove temporary files
 	rm -rf .tmp
 
-.PHONY: build up down logs contracts clean
+.PHONY: build up down logs subgraph contracts clean
 
 .DEFAULT_GOAL := help
 

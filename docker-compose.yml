@@ -116,6 +116,7 @@ services:
     env_file:
       - .env
     environment:
+      - NODE_ENV=development
       - VIRTUAL_HOST=${HOST_API}
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
@@ -123,7 +124,7 @@ services:
       - API_SERVICE_ENDPOINT=http://api:3000
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
-    command: ./run.sh
+    command: "npm run serve"
 
   api-worker:
     <<: *api
@@ -132,11 +133,13 @@ services:
       - db
       - api
       - graph
-    command: ./run-worker.sh
+    command: "npm run worker:serve"
 
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
     container_name: circles-ipfs-node
+    ports:
+      - "5001:5001"
     volumes:
       - ipfs:/data/ipfs
 
@@ -146,6 +149,8 @@ services:
     depends_on:
       - db
       - ipfs
+    ports:
+      - "8020:8020"
     environment:
       - VIRTUAL_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_PORT=8000
@@ -155,18 +160,3 @@ services:
       - postgres_host=db:5432
       - postgres_pass=${POSTGRES_PASSWORD}
       - postgres_user=${POSTGRES_USER}
-
-  subgraph:
-    build:
-      context: https://github.com/CirclesUBI/circles-subgraph.git#v0.1.10
-    container_name: circles-subgraph
-    depends_on:
-      - graph
-    env_file:
-      - .env
-    environment:
-      - GRAPH_NODE_ENDPOINT=http://graph:8020
-      - IPFS_NODE_ENDPOINT=http://ipfs:5001
-      - ACCESS_TOKEN=secret
-      - IS_DEBUG=true
-    command: ./run.sh

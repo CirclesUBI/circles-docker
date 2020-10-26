@@ -44,6 +44,15 @@ make down \
     && make contracts
 ```
 
+## Development
+
+Clone [circles-api](https://github.com/CirclesUBI/circles-api) and [safe-relay-service](https://github.com/CirclesUBI/safe-relay-service) into the parent folder of `circles-docker` if you're about to set up a development environment of the api or subgraph. Start all `make` commands with `ENV=backend` to point the build steps against the local repositories. For example:
+
+```
+make ENV=backend build
+make ENV=backend up
+```
+
 ## License
 
 GNU Affero General Public License v3.0 `AGPL-3.0`
