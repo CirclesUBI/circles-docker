@@ -124,7 +124,7 @@ services:
       - API_SERVICE_ENDPOINT=http://api:3000
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
-    command: "npm run serve"
+    command: "./run.sh"
 
   api-worker:
     <<: *api
@@ -133,7 +133,7 @@ services:
       - db
       - api
       - graph
-    command: "npm run worker:serve"
+    command: "./run-worker.sh"
 
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
