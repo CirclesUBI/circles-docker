@@ -29,9 +29,6 @@ make logs
 # Download and migrate contracts
 make contracts
 
-# Create and deploy subgraph
-make subgraph
-
 # Stop all containers
 make down
 
@@ -44,8 +41,7 @@ make down \
     && docker volume prune -f \
     && make build \
     && make up \
-    && make contracts \
-    && make subgraph
+    && make contracts
 ```
 
 ## License
