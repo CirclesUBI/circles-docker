@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  relayer-service: &relayer-service
+    build: ../safe-relay-service
+    volumes:
+      - "../safe-relay-service/safe-relay-service:/safe-relay-service/safe-relay-service"
+
+  relayer-worker: &relayer-worker
+    <<: *relayer-service
+
+  relayer-scheduler:
+    <<: *relayer-worker
+
+  api: &api
+    build: ../circles-api
+    volumes:
+      - "../circles-api/src:/usr/src/app/src"
+
+  api-worker:
+    <<: *api

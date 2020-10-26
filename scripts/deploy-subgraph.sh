@@ -10,8 +10,7 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 # Clean up
 rm -rf build src/types
 git fetch --all
-git reset --hard e2dd1a0
-# git reset --hard origin/master
+git checkout v0.1.10
 
 # Install dependencies
 echo "Installing npm dependencies .."
@@ -19,6 +18,10 @@ npm install &> /dev/null
 
 # Link to .env file
 ln -s ../../.env .env
+
+# Set env vars
+export IPFS_NODE_ENDPOINT=http://localhost:5001
+export GRAPH_NODE_ENDPOINT=http://localhost:8020
 
 # Prepare subgraph
 npm run codegen

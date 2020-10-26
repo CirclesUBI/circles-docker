@@ -1,4 +1,4 @@
-ENV ?= development
+ENV ?= frontend
 
 # Common docker-compose method and arguments
 COMPOSE = docker-compose -f docker-compose.yml -f docker-compose.$(ENV).yml -p circles
@@ -11,7 +11,7 @@ up: ## Start containers in background
 	$(COMPOSE) up -d
 
 down: ## Stop containers
-	$(COMPOSE) down --remove-orphans
+	$(COMPOSE) down
 
 logs: ## Follow container logs
 	$(COMPOSE) logs -f --tail 100
