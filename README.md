@@ -2,6 +2,13 @@
 
 Infrastructure provisioning for Circles development.
 
+## Requirements
+
+* docker
+* docker-compose
+* NodeJS
+* envsubst (required to build the subgraph)
+
 ## Setup
 
 * Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs. The default values should be sufficient if you only need a Circles backend during client development.
