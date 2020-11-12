@@ -110,7 +110,7 @@ services:
 
   api: &api
     build:
-      context: https://github.com/CirclesUBI/circles-api.git#v1.2.4
+      context: https://github.com/CirclesUBI/circles-api.git#v1.2.5
     container_name: circles-api
     depends_on:
       - db
