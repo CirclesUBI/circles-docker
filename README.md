@@ -73,6 +73,15 @@ make ENV=backend up
 make ENV=backend down
 ```
 
+## Contributing
+
+To contribute to this project please follow the [contributing guidelines]() and the [code of conduct]().
+Support channels are found at ...
+
+## Changelog
+
+This repo has a [changelog]().
+
 ## License
 
 GNU Affero General Public License v3.0 `AGPL-3.0`
