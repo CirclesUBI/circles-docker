@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 volumes:
   conf:
@@ -29,15 +29,21 @@ services:
     container_name: circles-ganache
     ports:
       - "8545:8545"
-    command: [
-      "--deterministic",
-      "--networkId", "5777",
-      "--hostname", "0.0.0.0",
-      "--accounts", "10",
-      "--defaultBalanceEther", "10000",
-      "--gasLimit", "10000000",
-      "--noVMErrorsOnRPCResponse"
-    ]
+    command:
+      [
+        "--deterministic",
+        "--networkId",
+        "5777",
+        "--hostname",
+        "0.0.0.0",
+        "--accounts",
+        "10",
+        "--defaultBalanceEther",
+        "10000",
+        "--gasLimit",
+        "10000000",
+        "--noVMErrorsOnRPCResponse",
+      ]
 
   nginx:
     image: nginx:1.19.1-alpine
@@ -69,7 +75,7 @@ services:
 
   relayer-service: &relayer-service
     build:
-      context: https://github.com/CirclesUBI/safe-relay-service.git#v4.1.5
+      context: https://github.com/CirclesUBI/safe-relay-service.git#v4.1.7
     container_name: circles-relayer-service
     depends_on:
       - db
@@ -110,7 +116,7 @@ services:
 
   api: &api
     build:
-      context: https://github.com/CirclesUBI/circles-api.git#v1.2.5
+      context: https://github.com/CirclesUBI/circles-api.git#v1.3.0
     container_name: circles-api
     depends_on:
       - db
