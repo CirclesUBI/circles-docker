@@ -116,7 +116,7 @@ services:
 
   api: &api
     build:
-      context: https://github.com/CirclesUBI/circles-api.git#v1.3.0
+      context: https://github.com/CirclesUBI/circles-api.git#v1.3.1
     container_name: circles-api
     depends_on:
       - db
