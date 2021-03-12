@@ -23,7 +23,7 @@ Infrastructure provisioning for Circles development.
 
 ## Usage
 
-```
+```bash
 # Start containers
 make up
 
@@ -53,21 +53,19 @@ make down \
 
 ## Development
 
-Clone [circles-api](https://github.com/CirclesUBI/circles-api) and [safe-relay-service](https://github.com/CirclesUBI/safe-relay-service) into the parent folder of `circles-docker` if you're about to set up a development environment of the api or relayer.
+Start the `up`, `down` and `logs` commands with `ENV=backend` when developing `circles-api` or `safe-relay-service` locally. For example:
 
-```
-├── circles-api
-├── circles-docker
-└── safe-relay-service
-```
-
-Start all `make` commands with `ENV=backend` to point the build steps against the local repositories. For example:
-
-```
-make ENV=backend build
+```bash
 make ENV=backend up
 make ENV=backend down
+make ENV=backend logs
 ```
+
+Running the commands for the `backend` will do the following:
+
+* Skip starting `circles-api` and `safe-relay-service` containers
+* Expose the ports of the PostgreSQL database and Redis
+* Make sure you only have all the basic services running (databases, Ethereum client, IPFS etc.)
 
 ## License
 
