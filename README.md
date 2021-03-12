@@ -24,9 +24,6 @@ Infrastructure provisioning for Circles development.
 ## Usage
 
 ```
-# Build all docker containers
-make build
-
 # Start containers
 make up
 
@@ -49,7 +46,6 @@ make clean
 make down \
     && docker container prune -f \
     && docker volume prune -f \
-    && make build \
     && make up \
     && make contracts \
     && make subgraph

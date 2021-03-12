@@ -4,9 +4,6 @@ ENV ?= frontend
 COMPOSE = docker-compose -f docker-compose.yml -f docker-compose.$(ENV).yml -p circles
 
 # Tasks
-build: ## Build containers
-	$(COMPOSE) build
-
 up: ## Start containers in background
 	$(COMPOSE) up -d
 
