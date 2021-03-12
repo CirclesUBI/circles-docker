@@ -132,7 +132,7 @@ services:
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
     volumes:
-      - pathfinder:/usr/src/app/pathfinder
+      - pathfinder:/usr/src/app/edges-data
     command: "npm run serve"
 
   api-worker:
