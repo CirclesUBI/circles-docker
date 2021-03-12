@@ -13,10 +13,6 @@
 <br />
 
 <div align="center">
-  <!-- npm -->
-  <a href="https://www.npmjs.com/package/@circles/core">
-    <img src="https://img.shields.io/npm/v/@circles/core?style=flat-square&color=%23f14d48" height="18">
-  </a>
   <!-- Licence -->
   <a href="https://github.com/CirclesUBI/circles-core/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/CirclesUBI/circles-core?style=flat-square&color=%23cc1e66" alt="License" height="18">
@@ -123,6 +119,10 @@ make sh c=circles-api
 # Connect to PostgreSQL database via psql
 make psql
 ```
+
+## Changelog
+
+This repo has a [changelog](https://github.com/CirclesUBI/circles-docker/blob/main/CHANGELOG.md).
 
 ## License
 
