@@ -44,7 +44,6 @@ make clean
 
 # Convenient full-reset during development
 make down \
-    && docker container prune -f \
     && docker volume prune -f \
     && make up \
     && make contracts \
