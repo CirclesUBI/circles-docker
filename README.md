@@ -1,6 +1,56 @@
-# circles-docker
+<div align="center">
+	<img width="80" src="https://raw.githubusercontent.com/CirclesUBI/.github/main/assets/logo.svg" />
+</div>
 
-Infrastructure provisioning for Circles development.
+<h1 align="center">circles-docker</h1>
+
+<div align="center">
+ <strong>
+   Infrastructure provisioning for Circles development
+ </strong>
+</div>
+
+<br />
+
+<div align="center">
+  <!-- npm -->
+  <a href="https://www.npmjs.com/package/@circles/core">
+    <img src="https://img.shields.io/npm/v/@circles/core?style=flat-square&color=%23f14d48" height="18">
+  </a>
+  <!-- Licence -->
+  <a href="https://github.com/CirclesUBI/circles-core/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/CirclesUBI/circles-core?style=flat-square&color=%23cc1e66" alt="License" height="18">
+  </a>
+  <!-- Discourse -->
+  <a href="https://aboutcircles.com/">
+    <img src="https://img.shields.io/discourse/topics?server=https%3A%2F%2Faboutcircles.com%2F&style=flat-square&color=%23faad26" alt="chat" height="18"/>
+  </a>
+  <!-- Twitter -->
+  <a href="https://twitter.com/CirclesUBI">
+    <img src="https://img.shields.io/twitter/follow/circlesubi.svg?label=twitter&style=flat-square&color=%23f14d48" alt="Follow Circles" height="18">
+  </a>
+</div>
+
+<div align="center">
+  <h3>
+    <a href="https://circlesubi.github.io/circles-core/">
+      API Docs
+    </a>
+    <span> | </span>
+    <a href="https://handbook.joincircles.net">
+      Handbook
+    </a>
+    <span> | </span>
+    <a href="https://github.com/CirclesUBI/.github/blob/main/CONTRIBUTING.md">
+      Contributing
+    </a>
+  </h3>
+</div>
+
+<br/>
+
+
+Enables you to start Circles services in Docker containers for Circles development.
 
 ## Requirements
 
