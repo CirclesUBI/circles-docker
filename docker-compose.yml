@@ -74,8 +74,7 @@ services:
     command: -notify-sighup circles-nginx-proxy -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
   relayer-service: &relayer-service
-    build:
-      context: https://github.com/CirclesUBI/safe-relay-service.git#v4.1.7
+    image: joincircles/safe-relay-service:v4.1.7
     container_name: circles-relayer-service
     depends_on:
       - db
@@ -115,8 +114,7 @@ services:
     command: ./run-scheduler.sh
 
   api: &api
-    build:
-      context: https://github.com/CirclesUBI/circles-api.git#v1.3.1
+    image: joincircles/circles-api:v1.3.2
     container_name: circles-api
     depends_on:
       - db
