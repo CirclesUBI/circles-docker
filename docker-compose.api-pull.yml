@@ -1,0 +1,38 @@
+version: '3'
+
+volumes:
+  pathfinder:
+
+services:
+  nginx:
+    volumes:
+      - ./api/nginx.conf:/etc/nginx/vhost.d/${HOST_API}
+
+  api: &api
+    image: joincircles/circles-api:v1.3.2
+    container_name: circles-api
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - VIRTUAL_HOST=${HOST_API}
+      - NODE_ENV=development
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - API_SERVICE_ENDPOINT=http://api:3000
+      - GRAPH_NODE_ENDPOINT=http://graph:8000
+      - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
+    volumes:
+      - pathfinder:/usr/src/app/edges-data
+    command: "npm run serve"
+
+  api-worker:
+    <<: *api
+    container_name: circles-api-worker
+    depends_on:
+      - db
+      - api
+      - graph
+    command: "npm run worker:serve"
