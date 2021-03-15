@@ -26,7 +26,7 @@ services:
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
     volumes:
       - pathfinder:/usr/src/app/edges-data
-    command: "npm run serve"
+    command: "npm run start"
 
   api-worker:
     <<: *api
@@ -35,4 +35,4 @@ services:
       - db
       - api
       - graph
-    command: "npm run worker:serve"
+    command: "npm run worker:start"
