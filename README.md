@@ -14,7 +14,7 @@
 
 <div align="center">
   <!-- Licence -->
-  <a href="https://github.com/CirclesUBI/circles-core/blob/main/LICENSE">
+  <a href="https://github.com/CirclesUBI/circles-docker/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/CirclesUBI/circles-core?style=flat-square&color=%23cc1e66" alt="License" height="18">
   </a>
   <!-- Discourse -->
@@ -29,10 +29,6 @@
 
 <div align="center">
   <h3>
-    <a href="https://circlesubi.github.io/circles-core/">
-      API Docs
-    </a>
-    <span> | </span>
     <a href="https://handbook.joincircles.net">
       Handbook
     </a>
@@ -118,10 +114,6 @@ make ENV=backend build
 make ENV=backend up
 make ENV=backend down
 ```
-
-## Changelog
-
-This repo has a [changelog](https://github.com/CirclesUBI/circles-docker/blob/main/CHANGELOG.md).
 
 ## License
 
