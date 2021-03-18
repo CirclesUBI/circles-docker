@@ -1,20 +1,66 @@
-ENV ?= frontend
+# Internal variables
+# ====================================
+pull = pull
+build = build
+skip = skip
+unset = 0
 
-# Common docker-compose method and arguments
-COMPOSE = docker-compose -f docker-compose.yml -f docker-compose.$(ENV).yml -p circles
+# Basic docker-compose variables
+# ====================================
+base_file = -f docker-compose.yml
+namespace = circles
+# ====================================
+
+# User variables
+# ====================================
+# PostgreSQL username for psql command
+POSTGRES_USER ?= postgres
+
+# Arguments to set if api or relayer are built from local folder ("build"),
+# pulled from registry ("pull") or skipped ("skip")
+RELAYER ?= $(pull)
+API ?= $(pull)
+
+# Flag to set if database and redis ports can be used outside of docker network
+EXPOSE_PORTS ?= $(unset)
+# ====================================
+
+# Use user arguments to build docker-compose base command
+ifneq ($(unset), $(EXPOSE_PORTS))
+	EXPOSE_PORTS_FILE = -f docker-compose.expose-ports.yml
+endif
+
+ifeq ($(pull), $(RELAYER))
+	RELAYER_FILE = -f docker-compose.relayer-pull.yml
+endif
+
+ifeq ($(build), $(RELAYER))
+	RELAYER_FILE = -f docker-compose.relayer-pull.yml -f docker-compose.relayer-build.yml
+endif
+
+ifeq ($(pull), $(API))
+	API_FILE = -f docker-compose.api-pull.yml
+endif
+
+ifeq ($(build), $(API))
+	API_FILE = -f docker-compose.api-pull.yml -f docker-compose.api-build.yml
+endif
+
+COMPOSE_UP = docker-compose ${base_file} ${RELAYER_FILE} ${API_FILE} ${EXPOSE_PORTS_FILE} -p ${namespace}
+
+# Address all containers even when they are not used. This is useful as a
+# independent "catch all" regardless of which containers were started
+COMPOSE_ALL = docker-compose ${base_file} -f docker-compose.relayer-${pull}.yml -f docker-compose.api-${pull}.yml -p ${namespace}
 
 # Tasks
-build: ## Build containers
-	$(COMPOSE) build
-
 up: ## Start containers in background
-	$(COMPOSE) up -d
+	$(COMPOSE_UP) up --detach --remove-orphans --build
 
-down: ## Stop containers
-	$(COMPOSE) down
+down: ## Stop containers and remove attached volumes
+	$(COMPOSE_ALL) down --remove-orphans --volumes
 
 logs: ## Follow container logs
-	$(COMPOSE) logs -f --tail 100
+	$(COMPOSE_ALL) logs --follow --tail 100
 
 contracts: ## Download and migrate contracts
 	./scripts/migrate-contracts.sh
@@ -25,7 +71,13 @@ subgraph: ## Create and deploy subgraph
 clean: ## Remove temporary files
 	rm -rf .tmp
 
-.PHONY: build up down logs subgraph contracts clean
+sh: ## Run shell in a container
+	docker exec -it $(c) /bin/sh
+
+psql: ## Run psql in circles-db container
+	docker exec -it circles-db psql -U $(POSTGRES_USER)
+
+.PHONY: up down logs subgraph contracts clean sh psql
 
 .DEFAULT_GOAL := help
 

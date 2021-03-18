@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-  db:
-    ports:
-      - "5432:5432"
-
-  redis:
-    ports:
-      - "6379:6379"
-
   relayer-service: &relayer-service
     build: ../safe-relay-service
     volumes:
@@ -19,11 +11,3 @@ services:
 
   relayer-scheduler:
     <<: *relayer-worker
-
-  api: &api
-    build: ../circles-api
-    volumes:
-      - "../circles-api/src:/usr/src/app/src"
-
-  api-worker:
-    <<: *api

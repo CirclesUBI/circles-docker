@@ -11,7 +11,7 @@ Infrastructure provisioning for Circles development.
 
 ## Setup
 
-* Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs. The default values should be sufficient if you only need a Circles backend during client development.
+* Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs. The default values should be sufficient for local development on your machine.
 
 * Edit your `/etc/hosts` file and add the following hostnames (or similar, depending on your `.env` configuration):
 
@@ -23,14 +23,36 @@ Infrastructure provisioning for Circles development.
 
 ## Usage
 
-```
-# Build all docker containers
-make build
+Please note that depending on how you installed Docker you might need to run these commands with `sudo` before them (except of `make contracts` and `make subgraph`).
 
-# Start containers
+```bash
+# Start all containers
 make up
 
-# Show container logs
+# If you need more control on how the `circles-api` and `safe-relay-service`
+# are handled during local development you can use the following values:
+#
+# pull = Loads the pre-built image from external registry (default)
+# build = Builds the container from your computer
+# skip = Skips starting this container
+#
+# Pass on these values for the `API` and `RELAYER` arguments depending on your
+# needs:
+make up API=skip|pull|build RELAYER=skip|pull|build
+
+# Example: Start all containers except api and safe-relayer-service
+make up API=skip RELAYER=skip
+
+# Example: Start all containers, but build relayer container from local
+# `safe-relay-service` repository (clone the project next to the
+# `circles-docker` repository)
+make up RELAYER=build
+
+# You can also expose the ports of the PostgreSQL and Redis database to use
+# them outside of the docker network
+make up EXPOSE_PORTS=1
+
+# Show all container logs
 make logs
 
 # Download and migrate contracts
@@ -39,38 +61,17 @@ make contracts
 # Build and upload subgraph
 make subgraph
 
-# Stop all containers
+# Stop all containers and remove attached volumes
 make down
 
 # Remove temporary files
 make clean
 
-# Convenient full-reset during development
-make down \
-    && docker container prune -f \
-    && docker volume prune -f \
-    && make build \
-    && make up \
-    && make contracts \
-    && make subgraph
-```
+# Run interactive shell in container
+make sh c=circles-api
 
-## Development
-
-Clone [circles-api](https://github.com/CirclesUBI/circles-api) and [safe-relay-service](https://github.com/CirclesUBI/safe-relay-service) into the parent folder of `circles-docker` if you're about to set up a development environment of the api or relayer.
-
-```
-├── circles-api
-├── circles-docker
-└── safe-relay-service
-```
-
-Start all `make` commands with `ENV=backend` to point the build steps against the local repositories. For example:
-
-```
-make ENV=backend build
-make ENV=backend up
-make ENV=backend down
+# Connect to PostgreSQL database via psql
+make psql
 ```
 
 ## License

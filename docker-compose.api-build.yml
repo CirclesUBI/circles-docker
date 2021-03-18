@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  nginx:
+    volumes:
+      - ./api/nginx.conf:/etc/nginx/vhost.d/${HOST_API}
+
+  api: &api
+    build: ../circles-api
+    volumes:
+      - "../circles-api/src:/usr/src/app/src"
+
+  api-worker:
+    <<: *api
