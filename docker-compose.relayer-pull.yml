@@ -21,7 +21,7 @@ services:
     env_file:
       - .env
     environment:
-      - VIRTUAL_HOST=${HOST_RELAYER}
+      # - VIRTUAL_HOST=${HOST_RELAYER}
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - RELAYER_REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/0
@@ -30,6 +30,8 @@ services:
       - C_FORCE_ROOT=true
       - DJANGO_SECRET_KEY=development
       - DJANGO_SETTINGS_MODULE=config.settings.development
+    ports:
+      - '8888:8888'
     volumes:
       - relayer:/nginx
       - relayer_html:/usr/share/nginx/html/relayer
@@ -44,8 +46,12 @@ services:
       - redis
       - relayer-service
     command: ./run-worker.sh
+    ports:
+      - '8887:8888'
 
   relayer-scheduler:
     <<: *relayer-worker
     container_name: circles-relayer-scheduler
     command: ./run-scheduler.sh
+    ports:
+      - '8886:8888'

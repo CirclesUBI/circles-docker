@@ -16,7 +16,7 @@ services:
     env_file:
       - .env
     environment:
-      - VIRTUAL_HOST=${HOST_API}
+      # - VIRTUAL_HOST=${HOST_API}
       - NODE_ENV=development
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
@@ -24,9 +24,11 @@ services:
       - API_SERVICE_ENDPOINT=http://api:3000
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
+    ports:
+      - '3000:3000'
     volumes:
       - pathfinder:/usr/src/app/edges-data
-    command: "npm run start"
+    command: 'npm run start'
 
   api-worker:
     <<: *api
@@ -35,4 +37,6 @@ services:
       - db
       - api
       - graph
-    command: "npm run worker:start"
+    command: 'npm run worker:start'
+    ports:
+      - '3001:3000'

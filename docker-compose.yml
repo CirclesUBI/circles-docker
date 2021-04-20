@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 volumes:
   conf:
@@ -25,16 +25,21 @@ services:
     image: trufflesuite/ganache-cli:latest
     container_name: circles-ganache
     ports:
-      - "8545:8545"
+      - '8545:8545'
     command:
       [
-        "--deterministic",
-        "--networkId", "5777",
-        "--hostname", "0.0.0.0",
-        "--accounts", "10",
-        "--defaultBalanceEther", "10000",
-        "--gasLimit", "10000000",
-        "--noVMErrorsOnRPCResponse",
+        '--deterministic',
+        '--networkId',
+        '5777',
+        '--hostname',
+        '0.0.0.0',
+        '--accounts',
+        '10',
+        '--defaultBalanceEther',
+        '10000',
+        '--gasLimit',
+        '10000000',
+        '--noVMErrorsOnRPCResponse',
       ]
 
   nginx:
@@ -43,7 +48,7 @@ services:
     depends_on:
       - db
     ports:
-      - "80:80"
+      - '80:80'
     volumes:
       - conf:/etc/nginx/conf.d
       - html:/usr/share/nginx/html
@@ -66,7 +71,7 @@ services:
     image: ipfs/go-ipfs:v0.4.23
     container_name: circles-ipfs-node
     ports:
-      - "5001:5001"
+      - '5001:5001'
     volumes:
       - ipfs:/data/ipfs
 
@@ -77,10 +82,11 @@ services:
       - db
       - ipfs
     ports:
-      - "8020:8020"
+      - '8020:8020'
+      - '8000:8000'
     environment:
-      - VIRTUAL_HOST=${HOST_GRAPH_NODE}
-      - VIRTUAL_PORT=8000
+      # - VIRTUAL_HOST=${HOST_GRAPH_NODE}
+      # - VIRTUAL_PORT=8000
       - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
       - ipfs=ipfs:5001
       - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
