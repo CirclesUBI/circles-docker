@@ -55,7 +55,7 @@ services:
       - vhost.d:/etc/nginx/vhost.d
 
   gen:
-    image: jwilder/docker-gen:0.7.0
+    image: jwilder/docker-gen:0.7.5
     container_name: circles-nginx-gen
     depends_on:
       - nginx
