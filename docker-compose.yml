@@ -71,7 +71,7 @@ services:
       - ipfs:/data/ipfs
 
   graph:
-    image: graphprotocol/graph-node:v0.19.2
+    image: graphprotocol/graph-node:v0.24.2
     container_name: circles-graph-node
     depends_on:
       - db
@@ -84,6 +84,8 @@ services:
       - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
       - ipfs=ipfs:5001
       - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
-      - postgres_host=db:5432
+      - postgres_host=db
+      - postgres_port=5432
       - postgres_pass=${POSTGRES_PASSWORD}
       - postgres_user=${POSTGRES_USER}
+      - RUST_BACKTRACE=full
