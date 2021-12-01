@@ -10,7 +10,7 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 # Clean up
 rm -rf build src/types
 git fetch --all
-git checkout -B v1.0.1
+git checkout -B v1.1.1
 
 # Install dependencies
 echo "Installing npm dependencies .."
