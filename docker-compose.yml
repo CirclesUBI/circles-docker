@@ -71,13 +71,17 @@ services:
       - ipfs:/data/ipfs
 
   graph:
-    image: graphprotocol/graph-node:v0.24.2
+    image: graphprotocol/graph-node:v0.25.0
     container_name: circles-graph-node
     depends_on:
       - db
       - ipfs
     ports:
-      - "8020:8020"
+      - '8000:8000'
+      - '8001:8001'
+      - '8020:8020'
+      - '8030:8030'
+      - '8040:8040'
     environment:
       - VIRTUAL_HOST=${HOST_GRAPH_NODE}
       - VIRTUAL_PORT=8000
