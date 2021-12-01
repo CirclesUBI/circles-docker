@@ -48,7 +48,7 @@ Enables you to start Circles services in Docker containers for Circles developme
 
 * docker
 * docker-compose
-* [Node](https://nodejs.org/en/download/) version 12
+* [Node](https://nodejs.org/en/download/) version 12.22
 * envsubst (required to build the subgraph)
 
 ## Setup
