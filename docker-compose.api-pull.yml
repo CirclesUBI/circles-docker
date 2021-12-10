@@ -23,6 +23,7 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - API_SERVICE_ENDPOINT=http://api:3000
       - GRAPH_NODE_ENDPOINT=http://graph:8000
+      - GRAPH_NODE_INDEXING_STATUS_ENDPOINT=http://graph:8030
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
     volumes:
       - pathfinder:/usr/src/app/edges-data
