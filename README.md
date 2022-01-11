@@ -62,6 +62,29 @@ Enables you to start Circles services in Docker containers for Circles developme
     127.0.1.1 graph.circles.local
     127.0.1.1 relay.circles.local
     ```
+### Setup for MAC OS X
+
+Note that the setup is different for MAC OS systems. Instead of adding to `/etc/hosts` the following lines:
+```
+127.0.1.1 api.circles.local
+127.0.1.1 graph.circles.local
+127.0.1.1 relay.circles.local
+```
+Use these:
+```
+127.0.0.1	api.circles.lan
+127.0.0.1	graph.circles.lan
+127.0.0.1	relay.circles.lan
+```
+After updating `/etc/hosts` flush the DNS cache, howto depends on your Mac OS X distribution. [Flush DNS cache Mac OS X](https://osxdaily.com/2008/03/21/how-to-flush-your-dns-cache-in-mac-os-x/)
+
+Also change in the `.env` file the following lines. So it matches the entries in `/etc/hosts`:
+```
+# Hosts
+HOST_API=api.circles.lan
+HOST_GRAPH_NODE=graph.circles.lan
+HOST_RELAYER=relay.circles.lan
+```
 
 ## Usage
 
