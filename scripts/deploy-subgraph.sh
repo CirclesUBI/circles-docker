@@ -11,6 +11,7 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 # Clean up
 rm -rf build src/types
 git fetch --all
+
 git reset --hard v1.2.1
 
 
