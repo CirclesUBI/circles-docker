@@ -15,7 +15,7 @@ check_tmp_folder() {
 
   # Clone repository into subfolder when it does not exist yet
   if ! [ -d "$TMP_FOLDER/$folder_name" ]; then
-    git clone --branch fix-image-build  $repository $TMP_FOLDER/$folder_name
+    git clone  $repository $TMP_FOLDER/$folder_name
   fi
 
   # Goto subfolder
