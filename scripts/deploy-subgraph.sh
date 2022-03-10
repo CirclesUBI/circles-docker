@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 source "scripts/common.sh"
 
 REPOSITORY=https://github.com/CirclesUBI/circles-subgraph.git
@@ -10,7 +11,8 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 # Clean up
 rm -rf build src/types
 git fetch --all
-git reset --hard v1.2.0
+
+git reset --hard v1.2.1
 
 
 # Install dependencies
@@ -25,9 +27,9 @@ export IPFS_NODE_ENDPOINT=http://localhost:5001
 export GRAPH_ADMIN_NODE_ENDPOINT=http://localhost:8020
 
 # Prepare subgraph
-npm run codegen
-npm run build
+npm run codegen --loglevel verbose
+npm run build --loglevel verbose
 
 # Create and deploy subgraph to node
-npm run create
-npm run deploy
+npm run create --loglevel verbose
+npm run deploy --loglevel verbose
