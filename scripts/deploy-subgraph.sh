@@ -17,7 +17,6 @@ git reset --hard v1.2.0
 
 # Install dependencies
 echo "Installing npm dependencies .."
-pwd
 npm install &> /dev/null
 
 # Link to .env file
@@ -28,10 +27,9 @@ export IPFS_NODE_ENDPOINT=http://localhost:5001
 export GRAPH_ADMIN_NODE_ENDPOINT=http://localhost:8020
 
 # Prepare subgraph
-pwd
-npm run codegen --loglevel verbose
-npm run build --loglevel verbose
+npm run codegen
+npm run build
 
 # Create and deploy subgraph to node
-npm run create --loglevel verbose
-npm run deploy --loglevel verbose
+npm run create
+npm run deploy
