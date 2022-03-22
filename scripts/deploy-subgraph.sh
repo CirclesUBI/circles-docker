@@ -12,7 +12,7 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 rm -rf build src/types
 git fetch --all
 
-git reset --hard v1.2.0
+git reset --hard v1.2.1-5-g935723a
 
 
 # Install dependencies
