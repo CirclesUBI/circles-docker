@@ -12,12 +12,12 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 rm -rf build src/types
 git fetch --all
 
-git reset --hard v1.2.1-6-g6bb06c7
+git reset --hard v1.2.2
 
 
 # Install dependencies
-echo "***Installing npm dependencies .."
-npm install #&> /dev/null
+echo "Installing npm dependencies .."
+npm install &> /dev/null
 
 # Link to .env file
 ln -s ../../.env .env
