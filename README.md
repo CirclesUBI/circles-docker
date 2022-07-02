@@ -139,6 +139,12 @@ make sh c=circles-api
 make psql
 ```
 
+For preparing the environment to run the [`circles-core` tests](https://github.com/CirclesUBI/circles-core/) use:
+
+```
+make down && make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
+```
+
 ## License
 
 GNU Affero General Public License v3.0 `AGPL-3.0`
