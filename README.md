@@ -48,7 +48,7 @@ Enables you to start Circles services in Docker containers for Circles developme
 
 * docker
 * docker-compose
-* [Node](https://nodejs.org/en/download/) version 12.22
+* [Node](https://nodejs.org/en/download/) version 14
 * envsubst (required to build the subgraph)
 
 ## Setup
@@ -137,6 +137,12 @@ make sh c=circles-api
 
 # Connect to PostgreSQL database via psql
 make psql
+```
+
+For preparing the environment to run the [`circles-core` tests](https://github.com/CirclesUBI/circles-core/) use:
+
+```
+make down && make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
 ```
 
 ## License
