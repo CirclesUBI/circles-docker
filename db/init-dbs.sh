@@ -24,3 +24,6 @@ for db in "${DATABASES[@]}"
 do
   create_database $db
 done
+
+# give permissions to shared volume 
+chmod +x /usr/src/app/edges-data

@@ -16,7 +16,7 @@ services:
     volumes:
       - ./db/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh
       - data:/var/lib/postgresql/data
-      - pathfinder:/usr/src/app/edges-data
+      - data:/usr/src/app/edges-data
 
   redis:
     image: redis:6.0.1-alpine
