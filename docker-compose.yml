@@ -22,19 +22,18 @@ services:
     container_name: circles-redis
 
   ganache:
-    image: trufflesuite/ganache-cli:latest
+    image: trufflesuite/ganache:latest
     container_name: circles-ganache
     ports:
       - "8545:8545"
     command:
       [
-        "--deterministic",
-        "--networkId", "5777",
-        "--hostname", "0.0.0.0",
-        "--accounts", "10",
-        "--defaultBalanceEther", "10000",
-        "--gasLimit", "10000000",
-        "--noVMErrorsOnRPCResponse",
+        "--wallet.deterministic",
+        "--chain.networkId", "5777",
+        "--server.host", "ganache",
+        "--wallet.totalAccounts", "10",
+        "--wallet.defaultBalance", "10000",
+        "--miner.blockGasLimit", "10000000",
       ]
 
   nginx:
