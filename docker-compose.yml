@@ -9,7 +9,7 @@ volumes:
 
 services:
   db:
-    image: postgres:13-alpine
+    image: postgres:12-alpine
     container_name: circles-db
     env_file:
       - .env
