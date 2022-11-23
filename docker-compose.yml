@@ -9,7 +9,7 @@ volumes:
 
 services:
   db:
-    image: postgres:12.2-alpine
+    image: postgres:12-alpine
     container_name: circles-db
     env_file:
       - .env
@@ -18,7 +18,7 @@ services:
       - data:/var/lib/postgresql/data
 
   redis:
-    image: redis:6.0.1-alpine
+    image: redis:6-alpine
     container_name: circles-redis
 
   ganache:
@@ -37,7 +37,7 @@ services:
       ]
 
   nginx:
-    image: nginx:1.19.1-alpine
+    image: nginx:1-alpine
     container_name: circles-nginx-proxy
     depends_on:
       - db
