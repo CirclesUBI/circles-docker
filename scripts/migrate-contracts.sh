@@ -11,7 +11,7 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 rm -rf build
 
 git fetch --all
-git reset --hard v3.1.0
+git reset --hard v3.2.0
 
 # Install dependencies
 echo "Installing npm dependencies .."
