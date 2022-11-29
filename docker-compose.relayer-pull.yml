@@ -11,7 +11,7 @@ services:
       - ./relayer/nginx.conf:/etc/nginx/vhost.d/${HOST_RELAYER}
 
   relayer-service: &relayer-service
-    image: joincircles/safe-relay-service:v5.0.1
+    image: joincircles/safe-relay-service:v5.0.2
     container_name: circles-relayer-service
     depends_on:
       - db
