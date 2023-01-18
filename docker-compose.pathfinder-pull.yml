@@ -1,0 +1,59 @@
+version: '3'
+services:
+  pathfinder2:
+    image: ghcr.io/circlesland/pathfinder2:1.4.0
+    expose:
+      - "54389"
+    command:
+      - "0.0.0.0:54389"
+    volumes:
+      - ${PWD}/.state/pathfinder:/var/pathfinder2/data
+ 
+  pathfinder2-updater:
+    depends_on:
+      - pathfinder2
+    image: ghcr.io/circlesland/pathfinder2-updater:0.1.1
+    restart: unless-stopped
+    environment:
+      INDEXER_DB_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
+      INDEXER_WS_URL:               ${INDEXER_WS_URL}
+      INTERNAL_CAPACITY_GRAPH_PATH: ${INTERNAL_CAPACITY_GRAPH_PATH}
+      EXTERNAL_CAPACITY_GRAPH_PATH: ${EXTERNAL_CAPACITY_GRAPH_PATH}
+      PATHFINDER_RPC_URL:           ${PATHFINDER_RPC_URL}
+    volumes:
+      - ${PWD}/.state/pathfinder:/var/pathfinder2/data
+
+  blockchain-indexer:
+    image: ghcr.io/circlesland/blockchain-indexer:0.0.67
+    expose:
+      - "8675"
+    restart: unless-stopped
+    environment:
+      INDEXER_WEBSOCKET_URL:     ${INDEXER_WEBSOCKET_URL}
+      INDEXER_RPC_GATEWAY_URL:   ${INDEXER_RPC_GATEWAY_URL}
+      HUB_ADDRESS:               ${HUB_ADDRESS}
+      INDEXER_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
+  
+  init-db:
+    restart: "no"
+    depends_on:
+      - db
+    image: postgres:12
+    command: "sh -c 'psql postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE_INDEXER_DB} < /docker-entrypoint-initdb.d/0.sql'"
+    volumes:
+      - ./0.sql:/docker-entrypoint-initdb.d/0.sql  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

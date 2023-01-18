@@ -10,7 +10,8 @@ volumes:
 services:
   db:
     image: postgres:12-alpine
-    container_name: circles-db
+    restart: unless-stopped
+    container_name: "${POSTGRES_HOST}"
     env_file:
       - .env
     volumes:
@@ -34,6 +35,7 @@ services:
         "--wallet.totalAccounts", "10",
         "--wallet.defaultBalance", "10000",
         "--miner.blockGasLimit", "10000000",
+        "--blockTime", "1"
       ]
 
   nginx:

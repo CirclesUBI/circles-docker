@@ -45,12 +45,12 @@ endif
 ifeq ($(build), $(API))
 	API_FILE = -f docker-compose.api-pull.yml -f docker-compose.api-build.yml
 endif
-
-COMPOSE_UP = docker-compose ${base_file} ${RELAYER_FILE} ${API_FILE} ${EXPOSE_PORTS_FILE} -p ${namespace}
+PATHFINDER_FILE= -f docker-compose.pathfinder-pull.yml
+COMPOSE_UP = docker-compose ${base_file} ${RELAYER_FILE} ${API_FILE} ${EXPOSE_PORTS_FILE} ${PATHFINDER_FILE} -p ${namespace}
 
 # Address all containers even when they are not used. This is useful as a
 # independent "catch all" regardless of which containers were started
-COMPOSE_ALL = docker-compose ${base_file} -f docker-compose.relayer-${pull}.yml -f docker-compose.api-${pull}.yml -p ${namespace}
+COMPOSE_ALL = docker-compose ${base_file} -f docker-compose.relayer-${pull}.yml -f docker-compose.api-${pull}.yml -f docker-compose.pathfinder-${pull}.yml -p ${namespace}
 
 # Tasks
 up: ## Start containers in background
