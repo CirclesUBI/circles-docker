@@ -41,7 +41,7 @@ services:
     image: postgres:12
     command: "sh -c 'psql postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE_INDEXER_DB} < /docker-entrypoint-initdb.d/0.sql'"
     volumes:
-      - ./0.sql:/docker-entrypoint-initdb.d/0.sql  
+      - ${PWD}/0.sql:/docker-entrypoint-initdb.d/0.sql
 
 
 
