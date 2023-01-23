@@ -24,7 +24,7 @@ services:
       - ${PWD}/.state/pathfinder:/var/pathfinder2/data
 
   blockchain-indexer:
-    image: ghcr.io/circlesland/blockchain-indexer:0.0.67
+    image: docker.io/circlesubi/blockchain-indexer:dev
     expose:
       - "8675"
     restart: unless-stopped
