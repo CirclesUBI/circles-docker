@@ -1,7 +1,7 @@
 version: '3'
 services:
   pathfinder2:
-    image: ghcr.io/circlesland/pathfinder2:1.4.0
+    image: docker.io/circlesubi/pathfinder2:feature-dockerfile
     expose:
       - "54389"
     command:
