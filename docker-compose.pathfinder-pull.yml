@@ -12,7 +12,7 @@ services:
   pathfinder2-updater:
     depends_on:
       - pathfinder2
-    image: ghcr.io/circlesland/pathfinder2-updater:0.1.1
+    image: docker.io/circlesubi/pathfinder2-updater:dev
     restart: unless-stopped
     environment:
       INDEXER_DB_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
