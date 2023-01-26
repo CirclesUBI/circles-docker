@@ -2,6 +2,7 @@ version: '3'
 services:
   pathfinder2:
     image: docker.io/circlesubi/pathfinder2:feature-dockerfile
+    restart: unless-stopped
     expose:
       - "54389"
     command:
