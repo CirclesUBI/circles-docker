@@ -35,11 +35,24 @@ services:
       HUB_ADDRESS:               ${HUB_ADDRESS}
       INDEXER_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
   
-  init-db:
-    restart: "no"
+  # init-db:
+  #   restart: "no"
+  #   depends_on:
+  #     - db
+  #   image: postgres:12
+  #   command: "sh -c 'psql postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE_INDEXER_DB} < /docker-entrypoint-initdb.d/0.sql'"
+  #   volumes:
+  #     - ${PWD}/0.0.64.sql:/docker-entrypoint-initdb.d/0.0.64.sql
+  
+  indexer-db-init:
+    build:
+      dockerfile: indexer-db-init/Dockerfile
+      context: .
     depends_on:
       - db
-    image: postgres:12
-    command: "sh -c 'psql postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE_INDEXER_DB} < /docker-entrypoint-initdb.d/0.sql'"
-    volumes:
-      - ${PWD}/0.0.64.sql:/docker-entrypoint-initdb.d/0.0.64.sql
+    environment:
+      POSTGRES_HOST: 'indexer-db'
+      POSTGRES_PORT: '5432'
+      POSTGRES_DB: 'index'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
