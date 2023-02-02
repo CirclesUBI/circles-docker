@@ -35,15 +35,19 @@ services:
       HUB_ADDRESS:               ${HUB_ADDRESS}
       INDEXER_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
   
-  # init-db:
-  #   restart: "no"
-  #   depends_on:
-  #     - db
-  #   image: postgres:12
-  #   command: "sh -c 'psql postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DATABASE_INDEXER_DB} < /docker-entrypoint-initdb.d/0.sql'"
-  #   volumes:
-  #     - ${PWD}/0.0.64.sql:/docker-entrypoint-initdb.d/0.0.64.sql
-  
+  other-blockchain-user:
+    restart: unless-stopped
+    build:
+      dockerfile: ${PWD}/other_chain_user/Dockerfile
+      context: ${PWD}/other_chain_user
+    depends_on:
+      - ganache
+    environment:
+      RPC_URL: 'http://ganache:8545'
+      TO_ADDRESS: '0x85a88313b37676ef7F846E00287090E75931E44B'
+      PRIVATE_KEY: '0x8a49c61f64ed99f8a59a9bd62cd39238f7256beead025b86e25476e329637b93'
+
+
   indexer-db-init:
     build:
       dockerfile: indexer-db-init/Dockerfile
@@ -56,3 +60,15 @@ services:
       POSTGRES_DB: 'index'
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'postgres'
+
+
+  pathfinder-proxy:
+    image: circlesubi/pathfinder-proxy:dev
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    environment:
+      PORT: '8080'
+      CORS_ORIGINS: 'https://circles.land'
+      UPSTREAM_SERVICE_ENDPOINTS: 'http://pathfinder2:54389'
+      UPSTREAM_HEALTH_ENDPOINTS: 'http://pathfinder2-updater:8794'
