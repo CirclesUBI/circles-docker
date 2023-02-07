@@ -1,19 +1,46 @@
 version: '3'
 services:
-  pathfinder2:
-    image: docker.io/circlesubi/pathfinder2:feature-dockerfile
-    restart: unless-stopped
+  indexer-db-init:
+    build:
+      dockerfile: indexer-db-init/Dockerfile
+      context: .
+    depends_on:
+      - db
+    environment:
+      POSTGRES_HOST:  ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DATABASE_INDEXER_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_USER}
+  
+  blockchain-indexer:
+    image: circlesubi/blockchain-indexer:dev
     expose:
-      - "54389"
-    command:
-      - "0.0.0.0:54389"
-    volumes:
-      - ${PWD}/.state/pathfinder:/var/pathfinder2/data
- 
+      - 8675
+    depends_on:
+      - indexer-db-init
+    restart: unless-stopped
+    environment:
+      INDEXER_WEBSOCKET_URL:     ${BLOCKCHAIN_INDEXER_WEBSOCKET_URL}
+      INDEXER_RPC_GATEWAY_URL:   ${INTERNAL_CHAIN_RPC_URL}
+      HUB_ADDRESS:               ${HUB_ADDRESS}
+      INDEXER_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
+    
+  other-blockchain-user:
+    restart: unless-stopped
+    build:
+      dockerfile: ${PWD}/other_chain_user/Dockerfile
+      context: ${PWD}/other_chain_user
+    environment:
+      RPC_URL: ${INTERNAL_CHAIN_RPC_URL}
+      TO_ADDRESS: '0x85a88313b37676ef7F846E00287090E75931E44B'
+      PRIVATE_KEY: '0x8a49c61f64ed99f8a59a9bd62cd39238f7256beead025b86e25476e329637b93'
+
   pathfinder2-updater:
     depends_on:
       - pathfinder2
-    image: docker.io/circlesubi/pathfinder2-updater:dev
+      - blockchain-indexer
+    image: circlesubi/pathfinder2-updater:dev
     restart: unless-stopped
     environment:
       INDEXER_DB_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
@@ -24,42 +51,16 @@ services:
     volumes:
       - ${PWD}/.state/pathfinder:/var/pathfinder2/data
 
-  blockchain-indexer:
-    image: docker.io/circlesubi/blockchain-indexer:dev
+  pathfinder2:
+    image: circlesubi/pathfinder2:eeee335
+    restart: unless-stopped
     expose:
-      - "8675"
-    restart: unless-stopped
-    environment:
-      INDEXER_WEBSOCKET_URL:     ${INDEXER_WEBSOCKET_URL}
-      INDEXER_RPC_GATEWAY_URL:   ${INDEXER_RPC_GATEWAY_URL}
-      HUB_ADDRESS:               ${HUB_ADDRESS}
-      INDEXER_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
-  
-  other-blockchain-user:
-    restart: unless-stopped
-    build:
-      dockerfile: ${PWD}/other_chain_user/Dockerfile
-      context: ${PWD}/other_chain_user
-    depends_on:
-      - ganache
-    environment:
-      RPC_URL: 'http://ganache:8545'
-      TO_ADDRESS: '0x85a88313b37676ef7F846E00287090E75931E44B'
-      PRIVATE_KEY: '0x8a49c61f64ed99f8a59a9bd62cd39238f7256beead025b86e25476e329637b93'
-
-
-  indexer-db-init:
-    build:
-      dockerfile: indexer-db-init/Dockerfile
-      context: .
-    depends_on:
-      - db
-    environment:
-      POSTGRES_HOST: 'indexer-db'
-      POSTGRES_PORT: '5432'
-      POSTGRES_DB: 'index'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'
+      - "54389"
+    command:
+      - "0.0.0.0:54389"
+    volumes:
+      - ${PWD}/.state/pathfinder:/var/pathfinder2/data
+ 
 
 
   pathfinder-proxy:
