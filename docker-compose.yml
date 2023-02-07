@@ -33,7 +33,7 @@ services:
         "--chain.networkId", "5777",
         "--server.host", "ganache",
         "--wallet.totalAccounts", "10",
-        "--wallet.defaultBalance", "10000",
+        "--wallet.defaultBalance", "100000000000000000000",
         "--miner.blockGasLimit", "10000000",
         "--blockTime", "1"
       ]
