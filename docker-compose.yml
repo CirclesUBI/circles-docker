@@ -32,8 +32,7 @@ services:
         "--chain.networkId", "5777",
         "--server.host", "ganache",
         "--wallet.totalAccounts", "10",
-        "--wallet.defaultBalance", "10000",
-        "--miner.blockGasLimit", "10000000",
+        "--wallet.defaultBalance", "10000000000000000",
       ]
 
   nginx:
