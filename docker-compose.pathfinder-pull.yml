@@ -1,17 +1,35 @@
 version: '3'
 services:
+  indexer-db:
+    image: postgres:12
+    restart: unless-stopped
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 100
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE_INDEXER_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+    volumes:
+      - ${PWD}/.state/indexer-db/pg_data:/var/lib/postgresql/data
+
   indexer-db-init:
     build:
       dockerfile: ${PWD}/indexer-db-init/Dockerfile
       context:  .
     depends_on:
-      - db
+      - indexer-db
     environment:
-      POSTGRES_HOST:  ${POSTGRES_HOST}
+      POSTGRES_HOST:  indexer-db
       POSTGRES_PORT:  ${POSTGRES_PORT}
       POSTGRES_DB:    ${POSTGRES_DATABASE_INDEXER_DB}
       POSTGRES_USER:  ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   
   blockchain-indexer:
     image: circlesubi/blockchain-indexer:dev
@@ -24,7 +42,7 @@ services:
       INDEXER_WEBSOCKET_URL:     ${BLOCKCHAIN_INDEXER_WEBSOCKET_URL}
       INDEXER_RPC_GATEWAY_URL:   ${INTERNAL_CHAIN_RPC_URL}
       HUB_ADDRESS:               ${HUB_ADDRESS}
-      INDEXER_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
+      INDEXER_CONNECTION_STRING: "Server=indexer-db;Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
     
   other-blockchain-user:
     restart: unless-stopped
@@ -43,7 +61,7 @@ services:
     image: circlesubi/pathfinder2-updater:dev
     restart: unless-stopped
     environment:
-      INDEXER_DB_CONNECTION_STRING: "Server=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
+      INDEXER_DB_CONNECTION_STRING: "Server=indexer-db;Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
       INDEXER_WS_URL:               ${INDEXER_WS_URL}
       INTERNAL_CAPACITY_GRAPH_PATH: ${INTERNAL_CAPACITY_GRAPH_PATH}
       EXTERNAL_CAPACITY_GRAPH_PATH: ${EXTERNAL_CAPACITY_GRAPH_PATH}
