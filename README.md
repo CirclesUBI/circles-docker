@@ -145,6 +145,31 @@ For preparing the environment to run the [`circles-core` tests](https://github.c
 make down && make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
 ```
 
+# Enabling the pathfinder service and blockchain indexer
+
+This integrates the  following components from [local envinroment](https://github.com/CirclesUBI/land-local) 
+- blockchain indexer
+- indexer db
+- pathfinder updater
+- pathfinder proxy
+- pathfinder 
+
+Which enables testing in the circles.garden envinroment the pathfinder server implemented (here)[https://github.com/chriseth/pathfinder2]
+
+There is known issue (2)[https://github.com/CirclesUBI/land-local/issues/2] whitin lan-local, so there is a walkaround to have the services running:
+
+```
+docker compose -p  circles -f docker-compose.pathfinder-pull.yml up indexer-db (wait until db ready)
+docker compose -p  circles -f docker-compose.pathfinder-pull.yml up -d indexer-db
+docker compose -p  circles -f docker-compose.pathfinder-pull.yml run --rm indexer-db-init 
+```
+After this launch the rest of the services as usual
+
+```
+make up API EXPOSE_PORTS=1 && make contracts && make subgraph && make up   EXPOSE_PORTS=1
+```
+
+if there are any issues with the indexer init remove the `.state` folder and restart the process again.
 ## License
 
 GNU Affero General Public License v3.0 `AGPL-3.0`
