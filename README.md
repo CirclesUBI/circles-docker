@@ -161,9 +161,9 @@ This integrates the  following components from [local envinroment](https://githu
 - pathfinder proxy
 - pathfinder 
 
-Which enables testing in the circles.garden envinroment the pathfinder server implemented (here)[https://github.com/chriseth/pathfinder2]
+Which enables testing in the circles.garden envinroment the pathfinder server implemented [here](https://github.com/chriseth/pathfinder2)
 
-There is known issue (2)[https://github.com/CirclesUBI/land-local/issues/2] whitin lan-local, this is a walkaround to have the services running:
+There is known issue [#2](https://github.com/CirclesUBI/land-local/issues/2) whitin lan-local, this is a walkaround to have the services running:
 (Here the commands are running with docker compose v2 but it works the same with docker compose v1)
 
 ```
