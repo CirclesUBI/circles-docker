@@ -174,7 +174,7 @@ docker compose -p  circles -f docker-compose.pathfinder-pull.yml run --rm indexe
 After this launch the rest of the services as usual
 
 ```
-make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up   EXPOSE_PORTS=1
+make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
 ```
 
 if there are any issues with the indexer init remove the `.state` folder and restart the process again.
