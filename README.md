@@ -65,9 +65,9 @@ Enables you to start Circles services in Docker containers for Circles developme
   You can run the following commands to do this automatically (on linux):
   ```bash
   # Add entries to /etc/hosts if they don't exist
-  grep -q "^127.0.0.1 api.circles.lan$" /etc/hosts || echo "127.0.0.1 api.circles.lan" | sudo tee -a /etc/hosts
-  grep -q "^127.0.0.1 graph.circles.lan$" /etc/hosts || echo "127.0.0.1 graph.circles.lan" | sudo tee -a /etc/hosts
-  grep -q "^127.0.0.1 relay.circles.lan$" /etc/hosts || echo "127.0.0.1 relay.circles.lan" | sudo tee -a /etc/hosts
+  grep -q "^127.0.0.1 api.circles.local$" /etc/hosts || echo "127.0.0.1 api.circles.local" | sudo tee -a /etc/hosts
+  grep -q "^127.0.0.1 graph.circles.local$" /etc/hosts || echo "127.0.0.1 graph.circles.local" | sudo tee -a /etc/hosts
+  grep -q "^127.0.0.1 relay.circles.local$" /etc/hosts || echo "127.0.0.1 relay.circles.local" | sudo tee -a /etc/hosts
   ```
 ### Setup for MAC OS X
 
@@ -163,7 +163,8 @@ This integrates the  following components from [local envinroment](https://githu
 
 Which enables testing in the circles.garden envinroment the pathfinder server implemented (here)[https://github.com/chriseth/pathfinder2]
 
-There is known issue (2)[https://github.com/CirclesUBI/land-local/issues/2] whitin lan-local, so there is a walkaround to have the services running:
+There is known issue (2)[https://github.com/CirclesUBI/land-local/issues/2] whitin lan-local, this is a walkaround to have the services running:
+(Here the commands are running with docker compose v2 but it works the same with docker compose v1)
 
 ```
 docker compose -p  circles -f docker-compose.pathfinder-pull.yml up indexer-db (wait until db ready)
@@ -173,7 +174,7 @@ docker compose -p  circles -f docker-compose.pathfinder-pull.yml run --rm indexe
 After this launch the rest of the services as usual
 
 ```
-make up API EXPOSE_PORTS=1 && make contracts && make subgraph && make up   EXPOSE_PORTS=1
+make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up   EXPOSE_PORTS=1
 ```
 
 if there are any issues with the indexer init remove the `.state` folder and restart the process again.
