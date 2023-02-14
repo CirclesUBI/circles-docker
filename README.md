@@ -62,6 +62,13 @@ Enables you to start Circles services in Docker containers for Circles developme
     127.0.1.1 graph.circles.local
     127.0.1.1 relay.circles.local
     ```
+  You can run the following commands to do this automatically (on linux):
+  ```bash
+  # Add entries to /etc/hosts if they don't exist
+  grep -q "^127.0.0.1 api.circles.lan$" /etc/hosts || echo "127.0.0.1 api.circles.lan" | sudo tee -a /etc/hosts
+  grep -q "^127.0.0.1 graph.circles.lan$" /etc/hosts || echo "127.0.0.1 graph.circles.lan" | sudo tee -a /etc/hosts
+  grep -q "^127.0.0.1 relay.circles.lan$" /etc/hosts || echo "127.0.0.1 relay.circles.lan" | sudo tee -a /etc/hosts
+  ```
 ### Setup for MAC OS X
 
 Note that the setup is different for MAC OS systems. Instead of adding to `/etc/hosts` the following lines:
