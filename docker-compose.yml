@@ -33,6 +33,7 @@ services:
         "--server.host", "ganache",
         "--wallet.totalAccounts", "10",
         "--wallet.defaultBalance", "10000000000000000",
+        "--miner.blockGasLimit", "10000000",
       ]
 
   nginx:
