@@ -70,7 +70,7 @@ services:
       - ${PWD}/.state/pathfinder:/var/pathfinder2/data
 
   pathfinder2:
-    image: circlesubi/pathfinder2:eeee335
+    image: circlesubi/pathfinder2-decimal:feature-return-decimal-values-4447618
     restart: unless-stopped
     expose:
       - "54389"
