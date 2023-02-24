@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-COPY indexer-db-init/seed.sh seed.sh
+COPY ${PWD}/indexer-db-init/seed.sh seed.sh
 
 RUN apt update
 RUN apt install -y gettext-base git postgresql-client
