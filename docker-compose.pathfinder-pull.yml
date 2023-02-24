@@ -21,7 +21,7 @@ services:
   indexer-db-init:
     build:
       dockerfile: ${PWD}/indexer-db-init/Dockerfile
-      context:  .
+      context:  ${PWD}/indexer-db-init
     depends_on:
       - indexer-db
     environment:
