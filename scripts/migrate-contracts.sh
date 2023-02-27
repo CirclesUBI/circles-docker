@@ -25,5 +25,3 @@ npm install &> /dev/null
 # Migrate contracts
 ./node_modules/.bin/truffle migrate
 
-# Populate contract addresses to .env file only for local development
-$SCRIPT_DIR/update_contract_addresses.sh
