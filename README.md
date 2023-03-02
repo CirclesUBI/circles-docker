@@ -169,12 +169,15 @@ There is known issue [#2](https://github.com/CirclesUBI/land-local/issues/2) whi
 
 ```
 1.
+cp .env.example .env
+
+2.
 make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
 
-2.  
+3.  
 make pathfinder
 
-3. 
+4. 
 docker compose -p  circles -f docker-compose.pathfinder-pull.yml up indexer-db (wait until db ready)
 
 docker compose -p  circles -f docker-compose.pathfinder-pull.yml up -d indexer-db
