@@ -178,7 +178,7 @@ make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORT
 make pathfinder
 
 4. 
-docker compose -p  circles -f docker-compose.pathfinder-pull.yml up indexer-db (wait until db ready)
+docker compose -p  circles -f docker-compose.pathfinder-pull.yml up indexer-db # (wait until db ready)
 
 docker compose -p  circles -f docker-compose.pathfinder-pull.yml up -d indexer-db
 
