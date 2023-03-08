@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 
-COPY seed.sh seed.sh
+WORKDIR /app
+COPY ./seed.sh seed.sh
 
 RUN apt update
 RUN apt install -y gettext-base git postgresql-client

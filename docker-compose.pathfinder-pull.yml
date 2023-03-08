@@ -22,8 +22,14 @@ services:
     build:
       dockerfile: ${PWD}/indexer-db-init/Dockerfile
       context:  ${PWD}/indexer-db-init
+    healthcheck:
+      test: [ "CMD", "test", "-f", "/app/.ready" ]
+      interval: 30s
+      timeout: 10s
+      retries: 12
     depends_on:
-      - indexer-db
+      indexer-db:
+        condition: service_healthy
     environment:
       POSTGRES_HOST:  indexer-db
       POSTGRES_PORT:  ${POSTGRES_PORT}
@@ -32,18 +38,24 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   
   blockchain-indexer:
-    image: circlesubi/blockchain-indexer:dev
+    build:
+      dockerfile: ${PWD}/blockchain-indexer/Dockerfile
+      context:    ${PWD}/blockchain-indexer
     expose:
       - 8675
     depends_on:
-      - indexer-db-init
+      indexer-db-init:
+        condition: service_healthy
     restart: unless-stopped
+    ports:
+      - 8675:8675
     environment:
       INDEXER_WEBSOCKET_URL:     ${BLOCKCHAIN_INDEXER_WEBSOCKET_URL}
       INDEXER_RPC_GATEWAY_URL:   ${INTERNAL_CHAIN_RPC_URL}
       HUB_ADDRESS:               ${HUB_ADDRESS}
       INDEXER_CONNECTION_STRING: "Server=indexer-db;Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
-    
+      START_FROM_BLOCK: ${START_BLOCK}
+ 
   other-blockchain-user:
     restart: unless-stopped
     build:
@@ -79,8 +91,6 @@ services:
     volumes:
       - ${PWD}/.state/pathfinder:/var/pathfinder2/data
  
-
-
   pathfinder-proxy:
     image: circlesubi/pathfinder-proxy:dev
     restart: unless-stopped
