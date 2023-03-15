@@ -47,10 +47,7 @@ ifeq ($(build), $(API))
 endif
 PATHFINDER_FILE= -f docker-compose.pathfinder-pull.yml
 
-COMPOSE_CMD := $(shell command -v docker-compose 2> /dev/null)
-ifeq ($(COMPOSE_CMD),)
-    COMPOSE_CMD := docker compose
-endif
+COMPOSE_CMD := docker compose
 
 COMPOSE_UP = ${COMPOSE_CMD} ${base_file} ${RELAYER_FILE} ${API_FILE} ${EXPOSE_PORTS_FILE}  -p ${namespace}
 
