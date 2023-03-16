@@ -24,4 +24,3 @@ npm install &> /dev/null
 
 # Migrate contracts
 ./node_modules/.bin/truffle migrate
-

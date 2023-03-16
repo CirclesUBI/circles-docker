@@ -4,13 +4,11 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 declare -a addresses=()
 
-
 while read -r line; do  addresses+=("$line"); done < $SCRIPT_DIR/../.tmp/contracts/addresses
 
 # Update addresses in .env file
 
 ENV_FILE=$SCRIPT_DIR/../.env
-
 
 # Substitute in .env in circles-docker  
 
