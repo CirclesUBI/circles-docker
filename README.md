@@ -166,7 +166,6 @@ Which enables testing in the circles.garden envinroment the pathfinder server im
 There is known issue [#2](https://github.com/CirclesUBI/land-local/issues/2) whitin lan-local, this is a walkaround to have the services running:
 (Here the commands are running with docker compose v2 but it works the same with docker compose v1)
 
-
 ```
 1.
 cp .env.example .env
@@ -176,16 +175,6 @@ make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORT
 
 3.  
 make pathfinder
-
-4. 
-docker compose -p  circles -f docker-compose.pathfinder-pull.yml up indexer-db # (wait until db ready)
-
-docker compose -p  circles -f docker-compose.pathfinder-pull.yml up -d indexer-db
-
-docker compose -p  circles -f docker-compose.pathfinder-pull.yml run --rm indexer-db-init 
-```
-
-
 
 if there are any issues with the indexer init remove the `.state` folder and restart the process again.
 ## License
