@@ -47,7 +47,7 @@ Enables you to start Circles services in Docker containers for Circles developme
 ## Requirements
 
 * docker
-* docker-compose
+* docker compose V2
 * [Node](https://nodejs.org/en/download/) version 14
 * envsubst (required to build the subgraph)
 
@@ -62,6 +62,13 @@ Enables you to start Circles services in Docker containers for Circles developme
     127.0.1.1 graph.circles.local
     127.0.1.1 relay.circles.local
     ```
+  You can run the following commands to do this automatically (on linux):
+  ```bash
+  # Add entries to /etc/hosts if they don't exist
+  grep -q "^127.0.0.1 api.circles.local$" /etc/hosts || echo "127.0.0.1 api.circles.local" | sudo tee -a /etc/hosts
+  grep -q "^127.0.0.1 graph.circles.local$" /etc/hosts || echo "127.0.0.1 graph.circles.local" | sudo tee -a /etc/hosts
+  grep -q "^127.0.0.1 relay.circles.local$" /etc/hosts || echo "127.0.0.1 relay.circles.local" | sudo tee -a /etc/hosts
+  ```
 ### Setup for MAC OS X
 
 Note that the setup is different for MAC OS systems. Instead of adding to `/etc/hosts` the following lines:
@@ -145,6 +152,31 @@ For preparing the environment to run the [`circles-core` tests](https://github.c
 make down && make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
 ```
 
+# Enabling the pathfinder service and blockchain indexer
+
+This integrates the  following components from [local envinroment](https://github.com/CirclesUBI/land-local) 
+- blockchain indexer
+- indexer db
+- pathfinder updater
+- pathfinder proxy
+- pathfinder 
+
+Which enables testing in the circles.garden envinroment the pathfinder server implemented [here](https://github.com/chriseth/pathfinder2)
+
+There is known issue [#2](https://github.com/CirclesUBI/land-local/issues/2) whitin lan-local, this is a walkaround to have the services running:
+(Here the commands are running with docker compose v2 but it works the same with docker compose v1)
+
+```
+1.
+cp .env.example .env
+
+2.
+make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
+
+3.  
+make pathfinder
+
+if there are any issues with the indexer init remove the `.state` folder and restart the process again.
 ## License
 
 GNU Affero General Public License v3.0 `AGPL-3.0`

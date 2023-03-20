@@ -10,7 +10,13 @@ volumes:
 services:
   db:
     image: postgres:12-alpine
+    restart: unless-stopped
     container_name: circles-db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h localhost -p ${POSTGRES_PORT} -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 100
     env_file:
       - .env
     volumes:
@@ -32,8 +38,9 @@ services:
         "--chain.networkId", "5777",
         "--server.host", "ganache",
         "--wallet.totalAccounts", "10",
-        "--wallet.defaultBalance", "10000",
+        "--wallet.defaultBalance", "100000000000000000000",
         "--miner.blockGasLimit", "10000000",
+        "--blockTime", "1"
       ]
 
   nginx:
@@ -87,8 +94,8 @@ services:
       - ethereum=${SUBGRAPH_NETWORK}:${ETHEREUM_NODE_ENDPOINT}
       - ipfs=ipfs:5001
       - postgres_db=${POSTGRES_DATABASE_GRAPH_NODE}
-      - postgres_host=db
-      - postgres_port=5432
+      - postgres_host=${POSTGRES_HOST}
+      - postgres_port=${POSTGRES_PORT}
       - postgres_pass=${POSTGRES_PASSWORD}
       - postgres_user=${POSTGRES_USER}
       - RUST_BACKTRACE=full

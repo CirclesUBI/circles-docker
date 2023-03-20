@@ -1,0 +1,106 @@
+version: '3'
+
+volumes:
+  indexer-db-data:
+  pathfinder-data:
+
+services:
+  indexer-db:
+    image: postgres:12
+    restart: unless-stopped
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 100
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE_INDEXER_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+    volumes:
+      - indexer-db-data:/var/lib/postgresql/data
+
+  indexer-db-init:
+    build:
+      dockerfile: ${PWD}/indexer-db-init/Dockerfile
+      context:  ${PWD}/indexer-db-init
+    healthcheck:
+      test: [ "CMD", "test", "-f", "/app/.ready" ]
+      interval: 30s
+      timeout: 10s
+      retries: 12
+    depends_on:
+      indexer-db:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST:  indexer-db
+      POSTGRES_PORT:  ${POSTGRES_PORT}
+      POSTGRES_DB:    ${POSTGRES_DATABASE_INDEXER_DB}
+      POSTGRES_USER:  ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  blockchain-indexer:
+    build:
+      dockerfile: ${PWD}/blockchain-indexer/Dockerfile
+      context:    ${PWD}/blockchain-indexer
+    expose:
+      - 8675
+    depends_on:
+      indexer-db-init:
+        condition: service_healthy
+    restart: unless-stopped
+    ports:
+      - 8675:8675
+    environment:
+      INDEXER_WEBSOCKET_URL:     ${BLOCKCHAIN_INDEXER_WEBSOCKET_URL}
+      INDEXER_RPC_GATEWAY_URL:   ${INTERNAL_CHAIN_RPC_URL}
+      HUB_ADDRESS:               ${HUB_ADDRESS}
+      INDEXER_CONNECTION_STRING: "Server=indexer-db;Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
+      START_FROM_BLOCK: ${START_BLOCK}
+  other-blockchain-user:
+    restart: unless-stopped
+    build:
+      dockerfile: ${PWD}/other_chain_user/Dockerfile
+      context: ${PWD}/other_chain_user
+    environment:
+      RPC_URL: ${INTERNAL_CHAIN_RPC_URL}
+      TO_ADDRESS: ${TO_ADDRESS}
+      PRIVATE_KEY: ${PRIVATE_KEY}
+  pathfinder2-updater:
+    depends_on:
+      - pathfinder2
+      - blockchain-indexer
+    image: circlesubi/pathfinder2-updater:dev
+    restart: unless-stopped
+    environment:
+      INDEXER_DB_CONNECTION_STRING: "Server=indexer-db;Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
+      INDEXER_WS_URL:               ${INDEXER_WS_URL}
+      INTERNAL_CAPACITY_GRAPH_PATH: ${INTERNAL_CAPACITY_GRAPH_PATH}
+      EXTERNAL_CAPACITY_GRAPH_PATH: ${EXTERNAL_CAPACITY_GRAPH_PATH}
+      PATHFINDER_RPC_URL:           ${PATHFINDER_RPC_URL}
+    volumes:
+      - pathfinder-data:/var/pathfinder2/data
+  pathfinder2:
+    image: circlesubi/pathfinder2-decimal:feature-return-decimal-values-4447618
+    restart: unless-stopped
+    expose:
+      - "54389"
+    command:
+      - "0.0.0.0:54389"
+    volumes:
+      - pathfinder-data:/var/pathfinder2/data
+  pathfinder-proxy:
+    image: circlesubi/pathfinder-proxy:dev
+    restart: unless-stopped
+    depends_on:
+      - pathfinder2-updater
+      - pathfinder2
+    ports:
+      - 8081:80
+    environment:
+      PORT: ${PATHFINDER_PROXY_PORT}
+      CORS_ORIGINS:  ${PATHFINDER_PROXY_CORS_ORIGINS}
+      UPSTREAM_SERVICE_ENDPOINTS: ${PATHFINDER_PROXY_UPSTREAM_SERVICE_ENDPOINTS} 
+      UPSTREAM_HEALTH_ENDPOINTS: ${PATHFINDER_PROXY_UPSTREAM_HEALTH_ENDPOINTS}

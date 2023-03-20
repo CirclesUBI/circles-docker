@@ -2,3 +2,4 @@
 !.env.example
 .tmp
 __pycache__
+*.sql
