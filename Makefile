@@ -55,7 +55,6 @@ COMPOSE_UP = ${COMPOSE_CMD} ${base_file} ${RELAYER_FILE} ${API_FILE} ${EXPOSE_PO
 # independent "catch all" regardless of which containers were started
 COMPOSE_ALL = ${COMPOSE_CMD} ${base_file} -f docker-compose.relayer-${pull}.yml -f docker-compose.api-${pull}.yml -f docker-compose.pathfinder-pull.yml -p ${namespace}
 
-
 # Tasks
 up: ## Start containers in background
 	$(COMPOSE_UP) up --detach --remove-orphans --build
@@ -73,7 +72,8 @@ subgraph: ## Create and deploy subgraph
 	./scripts/deploy-subgraph.sh
 
 pathfinder:
-	${COMPOSE_CMD}  ${PATHFINDER_FILE} -p ${namespace} up --detach --build 
+	${COMPOSE_CMD} ${PATHFINDER_FILE} -p ${namespace} up --detach --build
+
 clean: ## Remove temporary files
 	rm -rf .tmp
 
