@@ -83,7 +83,7 @@ services:
     volumes:
       - pathfinder-data:/var/pathfinder2/data
   pathfinder2:
-    image: circlesubi/pathfinder2-decimal:feature-return-decimal-values-4447618
+    image: circlesubi/pathfinder2:dev
     restart: unless-stopped
     expose:
       - "54389"
