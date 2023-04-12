@@ -16,7 +16,7 @@ git reset --hard v1.4.0
 
 # Install dependencies
 echo "Installing npm dependencies .."
-npm install &> /dev/null
+npm ci &> /dev/null
 
 # Link to .env file
 ln -s ../../.env .env
