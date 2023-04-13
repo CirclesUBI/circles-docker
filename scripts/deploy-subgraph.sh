@@ -15,7 +15,7 @@ git fetch --all
 git reset --hard v1.4.0
 
 # Install dependencies
-echo "Installing npm dependencies .."
+echo "Installing npm dependencies..."
 npm ci &> /dev/null
 
 # Link to .env file
@@ -25,10 +25,13 @@ ln -s ../../.env .env
 export IPFS_NODE_ENDPOINT=http://localhost:5001
 export GRAPH_ADMIN_NODE_ENDPOINT=http://localhost:8020
 
+echo "Prepare subgraph..."
 # Prepare subgraph
 npm run codegen
 npm run build
 
 # Create and deploy subgraph to node
+echo "Create subgraph..."
 npm run create
+echo "Deploy subgraph..."
 npm run deploy
