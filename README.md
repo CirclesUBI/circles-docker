@@ -48,7 +48,6 @@ Enables you to start Circles services in Docker containers for Circles developme
 - docker
 - docker compose V2
 - [Node](https://nodejs.org/en/download/) version 16
-- envsubst (required to build the subgraph)
 
 ## Setup
 
@@ -102,7 +101,7 @@ HOST_RELAYER=relay.circles.lan
 
 ## Usage
 
-Please note that depending on how you installed Docker you might need to run these commands with `sudo` before them (except of `make contracts` and `make subgraph`).
+Please note that depending on how you installed Docker you might need to run these commands with `sudo` before them (except of `make contracts`).
 
 ```bash
 # Start all containers
@@ -137,9 +136,6 @@ make logs
 # Download and migrate contracts
 make contracts
 
-# Build and upload subgraph
-make subgraph
-
 # Stop all containers and remove attached volumes
 make down
 
@@ -156,7 +152,7 @@ make psql
 For preparing the environment to run the [`circles-core` tests](https://github.com/CirclesUBI/circles-core/) use:
 
 ```
-make down && make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
+make down && make up EXPOSE_PORTS=1 && make contracts && make up EXPOSE_PORTS=1
 ```
 
 # Enabling the pathfinder service and blockchain indexer
@@ -179,7 +175,7 @@ There is known issue [#2](https://github.com/CirclesUBI/land-local/issues/2) whi
 cp .env.example .env
 
 2.
-make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
+make up EXPOSE_PORTS=1 && make contracts && make up EXPOSE_PORTS=1
 
 3.
 make pathfinder

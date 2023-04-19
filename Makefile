@@ -68,9 +68,6 @@ logs: ## Follow container logs
 contracts: ## Download and migrate contracts
 	./scripts/migrate-contracts.sh; ./scripts/update_contract_addresses.sh
 
-subgraph: ## Create and deploy subgraph
-	./scripts/deploy-subgraph.sh
-
 pathfinder:
 	${COMPOSE_CMD} ${PATHFINDER_FILE} -p ${namespace} up --detach --build
 
@@ -83,7 +80,7 @@ sh: ## Run shell in a container
 psql: ## Run psql in circles-db container
 	docker exec -it circles-db psql -U $(POSTGRES_USER)
 
-.PHONY: up down logs subgraph contracts clean sh psql
+.PHONY: up down logs contracts clean sh psql
 
 .DEFAULT_GOAL := help
 
