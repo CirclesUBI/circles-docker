@@ -83,7 +83,7 @@ services:
     volumes:
       - pathfinder-data:/var/pathfinder2/data
   pathfinder2:
-    image: circlesubi/pathfinder2:dev
+    image: circlesubi/pathfinder2:eeee335
     restart: unless-stopped
     expose:
       - "54389"
