@@ -99,3 +99,12 @@ services:
       - postgres_pass=${POSTGRES_PASSWORD}
       - postgres_user=${POSTGRES_USER}
       - RUST_BACKTRACE=full
+  subgraph:
+    image: joincircles/circles-subgraph:v1.4.0-4-gacbb0ad
+    container_name: circles-subgraph
+    env_file:
+      - .env
+    environment:
+      - IPFS_NODE_ENDPOINT=http://ipfs:5001
+      - GRAPH_ADMIN_NODE_ENDPOINT=http://graph:8020
+      - START_BLOCK=1
