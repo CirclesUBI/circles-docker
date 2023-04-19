@@ -41,51 +41,58 @@
 
 <br/>
 
-
 Enables you to start Circles services in Docker containers for Circles development.
 
 ## Requirements
 
-* docker
-* docker compose V2
-* [Node](https://nodejs.org/en/download/) version 14
-* envsubst (required to build the subgraph)
+- docker
+- docker compose V2
+- [Node](https://nodejs.org/en/download/) version 16
+- envsubst (required to build the subgraph)
 
 ## Setup
 
-* Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs. The default values should be sufficient for local development on your machine.
+- Make a copy of `.env.example` and rename it to `.env`, edit the file according to your needs. The default values should be sufficient for local development on your machine.
 
-* Edit your `/etc/hosts` file and add the following hostnames (or similar, depending on your `.env` configuration):
+- Edit your `/etc/hosts` file and add the following hostnames (or similar, depending on your `.env` configuration):
 
-    ```
-    127.0.1.1 api.circles.local
-    127.0.1.1 graph.circles.local
-    127.0.1.1 relay.circles.local
-    ```
+  ```
+  127.0.1.1 api.circles.local
+  127.0.1.1 graph.circles.local
+  127.0.1.1 relay.circles.local
+  ```
+
   You can run the following commands to do this automatically (on linux):
+
   ```bash
   # Add entries to /etc/hosts if they don't exist
   grep -q "^127.0.0.1 api.circles.local$" /etc/hosts || echo "127.0.0.1 api.circles.local" | sudo tee -a /etc/hosts
   grep -q "^127.0.0.1 graph.circles.local$" /etc/hosts || echo "127.0.0.1 graph.circles.local" | sudo tee -a /etc/hosts
   grep -q "^127.0.0.1 relay.circles.local$" /etc/hosts || echo "127.0.0.1 relay.circles.local" | sudo tee -a /etc/hosts
   ```
+
 ### Setup for MAC OS X
 
 Note that the setup is different for MAC OS systems. Instead of adding to `/etc/hosts` the following lines:
+
 ```
 127.0.1.1 api.circles.local
 127.0.1.1 graph.circles.local
 127.0.1.1 relay.circles.local
 ```
+
 Use these:
+
 ```
 127.0.0.1	api.circles.lan
 127.0.0.1	graph.circles.lan
 127.0.0.1	relay.circles.lan
 ```
+
 After updating `/etc/hosts` flush the DNS cache, howto depends on your Mac OS X distribution. [Flush DNS cache Mac OS X](https://osxdaily.com/2008/03/21/how-to-flush-your-dns-cache-in-mac-os-x/)
 
 Also change in the `.env` file the following lines. So it matches the entries in `/etc/hosts`:
+
 ```
 # Hosts
 HOST_API=api.circles.lan
@@ -154,12 +161,13 @@ make down && make up EXPOSE_PORTS=1 && make contracts && make subgraph && make u
 
 # Enabling the pathfinder service and blockchain indexer
 
-This integrates the  following components from [local envinroment](https://github.com/CirclesUBI/land-local) 
+This integrates the following components from [local envinroment](https://github.com/CirclesUBI/land-local)
+
 - blockchain indexer
 - indexer db
 - pathfinder updater
 - pathfinder proxy
-- pathfinder 
+- pathfinder
 
 Which enables testing in the circles.garden envinroment the pathfinder server implemented [here](https://github.com/chriseth/pathfinder2)
 
@@ -173,10 +181,11 @@ cp .env.example .env
 2.
 make up EXPOSE_PORTS=1 && make contracts && make subgraph && make up EXPOSE_PORTS=1
 
-3.  
+3.
 make pathfinder
 
 if there are any issues with the indexer init remove the `.state` folder and restart the process again.
 ## License
 
 GNU Affero General Public License v3.0 `AGPL-3.0`
+```
