@@ -17,7 +17,7 @@ git reset --hard v3.3.1
 
 # Install dependencies
 echo "Installing npm dependencies .."
-npm install &> /dev/null
+npm ci &> /dev/null
 
 # Compile contracts
 ./node_modules/.bin/truffle compile
