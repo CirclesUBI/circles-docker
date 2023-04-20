@@ -100,7 +100,7 @@ services:
       - postgres_user=${POSTGRES_USER}
       - RUST_BACKTRACE=full
   subgraph:
-    image: joincircles/circles-subgraph:v1.4.0-4-gacbb0ad
+    image: joincircles/circles-subgraph:v2.0.0
     container_name: circles-subgraph
     env_file:
       - .env
