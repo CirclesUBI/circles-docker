@@ -13,6 +13,7 @@ services:
     container_name: circles-api
     depends_on:
       - db
+      - subgraph
     env_file:
       - .env
     environment:
