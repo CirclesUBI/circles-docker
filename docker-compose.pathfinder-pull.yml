@@ -74,7 +74,7 @@ services:
     depends_on:
       - pathfinder2
       - blockchain-indexer
-    image: circlesubi/pathfinder2-updater:dev
+    image: circlesubi/pathfinder2-updater:latest
     restart: unless-stopped
     environment:
       INDEXER_DB_CONNECTION_STRING: "Server=indexer-db;Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
@@ -96,7 +96,7 @@ services:
       - pathfinder-data:/var/pathfinder2/data
   
   pathfinder-proxy:
-    image: circlesubi/pathfinder-proxy:dev
+    image: circlesubi/pathfinder-proxy:latest
     restart: unless-stopped
     depends_on:
       - pathfinder2-updater
