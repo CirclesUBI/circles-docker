@@ -4,6 +4,8 @@ volumes:
   indexer-db-data:
   pathfinder-data:
 
+# Docker images and version from https://github.com/CirclesUBI/circles-platform/blob/main/ansible/roles/apps/templates/docker-compose.yaml.j2 
+# commit 2771fbf1b13fd83f5631b6686a69d4f178765cb8
 services:
   indexer-db:
     image: postgres:12
@@ -33,7 +35,7 @@ services:
       timeout: 10s
       retries: 12
     depends_on:
-      indexer-db:
+      - indexer-db:
         condition: service_healthy
     environment:
       POSTGRES_HOST:  indexer-db
@@ -41,14 +43,13 @@ services:
       POSTGRES_DB:    ${POSTGRES_DATABASE_INDEXER_DB}
       POSTGRES_USER:  ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  
   blockchain-indexer:
-    build:
-      dockerfile: ${PWD}/blockchain-indexer/Dockerfile
-      context:    ${PWD}/blockchain-indexer
+    image: circlesubi/blockchain-indexer:latest 
     expose:
       - 8675
     depends_on:
-      indexer-db-init:
+      - indexer-db-init:
         condition: service_healthy
     restart: unless-stopped
     ports:
@@ -58,7 +59,7 @@ services:
       INDEXER_RPC_GATEWAY_URL:   ${INTERNAL_CHAIN_RPC_URL}
       HUB_ADDRESS:               ${HUB_ADDRESS}
       INDEXER_CONNECTION_STRING: "Server=indexer-db;Port=5432;Database=${POSTGRES_DATABASE_INDEXER_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_USER};Command Timeout=240"
-      START_FROM_BLOCK: ${START_BLOCK}
+  
   other-blockchain-user:
     restart: unless-stopped
     build:
@@ -68,6 +69,7 @@ services:
       RPC_URL: ${INTERNAL_CHAIN_RPC_URL}
       TO_ADDRESS: ${TO_ADDRESS}
       PRIVATE_KEY: ${PRIVATE_KEY}
+ 
   pathfinder2-updater:
     depends_on:
       - pathfinder2
@@ -82,8 +84,9 @@ services:
       PATHFINDER_RPC_URL:           ${PATHFINDER_RPC_URL}
     volumes:
       - pathfinder-data:/var/pathfinder2/data
+  
   pathfinder2:
-    image: circlesubi/pathfinder2:dev
+    image: circlesubi/pathfinder2:latest
     restart: unless-stopped
     expose:
       - "54389"
@@ -91,6 +94,7 @@ services:
       - "0.0.0.0:54389"
     volumes:
       - pathfinder-data:/var/pathfinder2/data
+  
   pathfinder-proxy:
     image: circlesubi/pathfinder-proxy:dev
     restart: unless-stopped
