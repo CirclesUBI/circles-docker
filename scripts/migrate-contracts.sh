@@ -13,7 +13,7 @@ check_tmp_folder $REPOSITORY $FOLDER_NAME
 rm -rf build
 
 git fetch --all
-git reset --hard v3.3.1
+git checkout node16
 
 # Install dependencies
 echo "Installing npm dependencies .."
