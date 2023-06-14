@@ -26,6 +26,8 @@ services:
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - GRAPH_NODE_INDEXING_STATUS_ENDPOINT=http://graph:8030
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
+      - PATHFINDER_SERVICE_ENDPOINT=${HOST_PATHFINDER}
+
     volumes:
       - pathfinder:/usr/src/app/edges-data
     command: "npm run start"
