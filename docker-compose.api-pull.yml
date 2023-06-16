@@ -9,7 +9,7 @@ services:
       - ./api/nginx.conf:/etc/nginx/vhost.d/${HOST_API}
 
   api: &api
-    image: joincircles/circles-api:v1.8.1
+    image: joincircles/circles-api:v1.9.0
     container_name: circles-api
     depends_on:
       - db
@@ -26,6 +26,8 @@ services:
       - GRAPH_NODE_ENDPOINT=http://graph:8000
       - GRAPH_NODE_INDEXING_STATUS_ENDPOINT=http://graph:8030
       - RELAY_SERVICE_ENDPOINT=http://relayer-service:8888
+      - PATHFINDER_SERVICE_ENDPOINT=${HOST_PATHFINDER}
+
     volumes:
       - pathfinder:/usr/src/app/edges-data
     command: "npm run start"
