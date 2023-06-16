@@ -35,8 +35,8 @@ services:
       timeout: 10s
       retries: 12
     depends_on:
-      - indexer-db: 
-          condition: service_healthy
+      indexer-db:
+        condition: service_healthy
     environment:
       POSTGRES_HOST:  indexer-db
       POSTGRES_PORT:  ${POSTGRES_PORT}
@@ -49,8 +49,8 @@ services:
     expose:
       - 8675
     depends_on:
-      - indexer-db-init:
-          condition: service_healthy
+      indexer-db-init:
+        condition: service_healthy
     restart: unless-stopped
     ports:
       - 8675:8675
