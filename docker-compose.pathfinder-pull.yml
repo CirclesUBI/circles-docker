@@ -90,6 +90,8 @@ services:
     restart: unless-stopped
     expose:
       - "54389"
+    ports:
+      - 54389:54389
     command:
       - "0.0.0.0:54389"
     volumes:
