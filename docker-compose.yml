@@ -77,7 +77,7 @@ services:
       - ipfs:/data/ipfs
 
   graph:
-    image: graphprotocol/graph-node:v0.29.0
+    image: graphprotocol/graph-node:v0.31.0
     container_name: circles-graph-node
     depends_on:
       - db
