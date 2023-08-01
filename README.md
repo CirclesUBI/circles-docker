@@ -147,6 +147,10 @@ make sh c=circles-api
 
 # Connect to PostgreSQL database via psql
 make psql
+
+# Create dummy data for news
+
+make data
 ```
 
 For preparing the environment to run the [`circles-core` tests](https://github.com/CirclesUBI/circles-core/) use:
