@@ -10,4 +10,5 @@ docker exec -it circles-db psql -U postgres -d api -c "insert into news (message
 ('News 6', '2022-06-12', 55131232, false),
 ('News 7', '2022-07-20', 66131232, true),
 ('News 8', '2022-08-21', 77131232, false),
-('News 9', '2022-09-22', 88131232, true) ;"
+('News 9', '2022-08-21', 01131232, false),
+('News 10, '2022-09-22', 88131232, true) ;"
