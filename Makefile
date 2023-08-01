@@ -66,7 +66,7 @@ logs: ## Follow container logs
 	$(COMPOSE_ALL) logs --follow --tail 100
 
 contracts: ## Download and migrate contracts
-	./scripts/migrate-contracts.sh;
+	./scripts/migrate-contracts.sh; ./scripts/update_contract_addresses.sh
 
 data: ## Insert Data in news tables
 	./scripts/insert-news.sh
