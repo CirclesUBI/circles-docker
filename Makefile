@@ -53,7 +53,7 @@ COMPOSE_UP = ${COMPOSE_CMD} ${base_file} ${RELAYER_FILE} ${API_FILE} ${PAYMENT_A
 
 # Address all containers even when they are not used. This is useful as a
 # independent "catch all" regardless of which containers were started
-COMPOSE_ALL = ${COMPOSE_CMD} ${base_file} -f docker-compose.relayer-${pull}.yml -f docker-compose.api-${pull}.yml -f docker-compose.pathfinder-pull.yml  -f docker-compose.payment-api-pull.yml -p ${namespace}
+COMPOSE_ALL = ${COMPOSE_CMD} ${base_file} -f docker-compose.relayer-${pull}.yml -f docker-compose.api-${pull}.yml ${PATHFINDER_FILE} ${PAYMENT_API_FILE} -p ${namespace}
 
 # Tasks
 up: ## Start containers in background
