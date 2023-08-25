@@ -1,12 +1,26 @@
 version: "3"
 
 volumes:
+ nginx-shared-txs:
   conf:
   data:
   html:
   ipfs:
   vhost.d:
 
+x-healthcheck-redis-template: &redishealthcheck
+  healthcheck:
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 30s
+    timeout: 30s
+    retries: 3
+
+x-healthcheck-db-template: &pghealthcheck
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U postgres"]
+    interval: 30s
+    timeout: 30s
+    retries: 3
 services:
   db:
     image: postgres:12-alpine
@@ -112,3 +126,73 @@ services:
       - IPFS_NODE_ENDPOINT=http://ipfs:5001
       - GRAPH_ADMIN_NODE_ENDPOINT=http://graph:8020
       - ACCESS_TOKEN=123
+
+#  Safe Transsaction service
+  txs-redis:
+    image: redis:alpine
+    <<: *redishealthcheck
+
+  txs-rabbitmq:
+    image: rabbitmq:alpine
+
+  txs-web:
+    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    env_file:
+      - .env
+    environment:
+      - ETHEREUM_NODE_URL=${ETHEREUM_NODE_ENDPOINT}
+    depends_on:
+      db:
+        condition: service_healthy
+      txs-redis:
+        condition: service_healthy
+    working_dir: /app
+    volumes:
+      - nginx-shared-txs:/nginx
+    command: docker/web/run_web.sh
+
+  txs-worker-indexer: &txs-worker
+    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    env_file:
+      - .env
+    environment:
+      - ETHEREUM_NODE_URL=${ETHEREUM_NODE_ENDPOINT}
+      - RUN_MIGRATIONS=1
+      - WORKER_QUEUES=default,indexing
+    depends_on:
+      db:
+        condition: service_healthy
+      txs-redis:
+        condition: service_healthy
+    command: docker/web/celery/worker/run.sh
+
+  txs-worker-contracts-tokens:
+    <<: *txs-worker
+    environment:
+      - WORKER_QUEUES=contracts,tokens
+      - ETHEREUM_NODE_URL=${ETHEREUM_NODE_ENDPOINT}
+    depends_on:
+      db:
+        condition: service_healthy
+      txs-redis:
+        condition: service_healthy
+
+  txs-worker-notifications-webhooks:
+    <<: *txs-worker
+    environment:
+      - WORKER_QUEUES=notifications,webhooks
+      - ETHEREUM_NODE_URL=${E_ENDPOINT}
+    depends_on:
+      txs-db:
+        condition: service_healthy
+      txs-redis:
+        condition: service_healthy
+
+  txs-scheduler:
+    <<: *txs-worker
+    depends_on:
+      txs-db:
+        condition: service_healthy
+      txs-redis:
+        condition: service_healthy
+    command: docker/web/celery/scheduler/run.sh
