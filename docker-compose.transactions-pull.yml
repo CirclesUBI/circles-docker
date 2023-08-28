@@ -1,0 +1,81 @@
+version: "3"
+
+volumes:
+  tx_service:
+  tx_service_html:
+
+services:
+  nginx:
+    volumes:
+      - tx_service_html:/usr/share/nginx/html/tx_service
+      - ./tx_service/nginx.conf:/etc/nginx/vhost.d/${HOST_TX_SERVICE}
+
+
+  rabbitmq:
+    image: rabbitmq:alpine
+    ports:
+      - "5672:5672"
+
+  tx-service: &tx-service
+    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    container_name: circles-tx-service
+    depends_on:
+      - db
+      - ganache
+      - redis
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+       - VIRTUAL_HOST=${HOST_TX_SERVICE}
+       - ETHEREUM_NODE_URL=${ETHEREUM_NODE_ENDPOINT}
+    volumes:
+      - tx_service:/nginx
+      - tx_service_html:/usr/share/nginx/html/tx_service
+    command: docker/web/run_web.sh
+
+  txs-worker-indexer: &txs-worker
+    <<: *tx-service
+    container_name: circles-tx-worker
+    env_file:
+      - .env
+    environment:
+      - ETHEREUM_NODE_URL=${ETHEREUM_NODE_ENDPOINT}
+      - RUN_MIGRATIONS=1
+      - WORKER_QUEUES=default,indexing
+    depends_on:
+      - db
+      - ganache
+      - redis
+      - rabbitmq
+      - tx-service
+    command: docker/web/celery/worker/run.sh
+
+
+  txs-worker-contracts-tokens:
+    <<: *txs-worker
+    container_name: circles-tx-worker-contracts-token
+    environment:
+      - WORKER_QUEUES=contracts,tokens
+      - ETHEREUM_NODE_URL=${ETHEREUM_NODE_ENDPOINT}
+    depends_on:
+      - db
+      - redis
+
+  txs-worker-notifications-webhooks:
+    <<: *txs-worker
+    container_name: circles-tx-worker-notifications
+    environment:
+      - WORKER_QUEUES=notifications,webhooks
+      - ETHEREUM_NODE_URL=${ETHEREUM_NODE_ENDPOINT}
+    depends_on:
+      - db
+      - redis
+
+  txs-scheduler:
+    <<: *txs-worker
+    container_name: circles-tx-scheduler
+    depends_on:
+     - db
+     - redis
+    command: docker/web/celery/scheduler/run.sh

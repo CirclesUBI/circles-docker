@@ -47,9 +47,10 @@ ifeq ($(build), $(API))
 endif
 PATHFINDER_FILE= -f docker-compose.pathfinder-pull.yml
 PAYMENT_API_FILE = -f docker-compose.payment-api-pull.yml
+TRANSACTIONS_FILE= -f docker-compose.transactions-pull.yml
 COMPOSE_CMD := docker compose
 
-COMPOSE_UP = ${COMPOSE_CMD} ${base_file} ${RELAYER_FILE} ${API_FILE} ${PAYMENT_API_FILE} ${EXPOSE_PORTS_FILE}  -p ${namespace}
+COMPOSE_UP = ${COMPOSE_CMD} ${base_file} ${RELAYER_FILE} ${API_FILE} ${PAYMENT_API_FILE} ${TRANSACTIONS_FILE} ${EXPOSE_PORTS_FILE}  -p ${namespace}
 
 # Address all containers even when they are not used. This is useful as a
 # independent "catch all" regardless of which containers were started
