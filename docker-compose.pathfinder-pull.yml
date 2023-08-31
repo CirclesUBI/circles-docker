@@ -68,7 +68,7 @@ services:
     environment:
       RPC_URL: ${INTERNAL_CHAIN_RPC_URL}
       TO_ADDRESS: ${TO_ADDRESS}
-      PRIVATE_KEY: ${PRIVATE_KEY}
+      PRIVATE_KEY: ${PRIVATE_KEY_PATHFINDER}
  
   pathfinder2-updater:
     depends_on:
