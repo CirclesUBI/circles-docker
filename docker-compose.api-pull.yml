@@ -9,7 +9,7 @@ services:
       - ./api/nginx.conf:/etc/nginx/vhost.d/${HOST_API}
 
   api: &api
-    image: joincircles/circles-api:v1.10.0
+    image: joincircles/circles-api:v1.9.5-3-g826f4bd
     container_name: circles-api
     depends_on:
       - db
