@@ -1,8 +1,8 @@
 version: "3"
 
 services:
-  payment-api: &payment-sapi
-    image: joincircles/circles-payment-api:v1.0.0
+  payment-api:
+    image: joincircles/circles-payment-api:v1.0.1
     container_name: circles-payment-api
     ports:
       - 3002:3002
@@ -10,5 +10,6 @@ services:
       - .env
     environment:
       - PORT=3002
+      - FASTIFY_LOG_LEVEL=info
       - FUNDER_ACCOUNT_PRIVATE_KEY=${PRIVATE_KEY_PAYMENT_API}
       - RPC_URL=${ETHEREUM_NODE_ENDPOINT}
