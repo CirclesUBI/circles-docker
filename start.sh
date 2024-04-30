@@ -22,25 +22,37 @@ update_hosts() {
     fi
 }
 
-# Update /etc/hosts depending on the operating system
+# Update /etc/hosts and .env file depending on the operating system
 if [ "$OS" = "Linux" ]; then
     echo "Detected Linux OS"
     update_hosts "127.0.0.1" "api.circles.local"
     update_hosts "127.0.0.1" "graph.circles.local"
     update_hosts "127.0.0.1" "relay.circles.local"
+    # Update .env file to match Linux entries
+    sed -i 's/HOST_API=.*/HOST_API=api.circles.local/' .env
+    sed -i 's/HOST_GRAPH_NODE=.*/HOST_GRAPH_NODE=graph.circles.local/' .env
+    sed -i 's/HOST_RELAYER=.*/HOST_RELAYER=relay.circles.local/' .env
 elif [ "$OS" = "Darwin" ]; then
     echo "Detected macOS"
     update_hosts "127.0.0.1" "api.circles.lan"
     update_hosts "127.0.0.1" "graph.circles.lan"
     update_hosts "127.0.0.1" "relay.circles.lan"
+    # Update .env file to match macOS entries
+    sed -i '' 's/HOST_API=.*/HOST_API=api.circles.lan/' .env
+    sed -i '' 's/HOST_GRAPH_NODE=.*/HOST_GRAPH_NODE=graph.circles.lan/' .env
+    sed -i '' 's/HOST_RELAYER=.*/HOST_RELAYER=relay.circles.lan/' .env
+    # Flush DNS cache on macOS
+    sudo killall -HUP mDNSResponder
+    echo "Flushed DNS cache on macOS"
 else
     echo "Unsupported OS: $OS"
     exit 1
 fi
 
-# Make commands to manage and build the project
 make down
 make clean
+
 make up EXPOSE_PORTS=1
 make contracts
 make up EXPOSE_PORTS=1
+make pathfinder
