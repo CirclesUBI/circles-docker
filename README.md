@@ -52,11 +52,12 @@ Enables you to start Circles services in Docker containers for Circles developme
 ## Quick start
 
 1. Run `./start.sh` and wait for completion
-2. Visit http://localhost:8080/ and complete the setup of a new account
-3. Once you reach http://localhost:8080/validation:
+2. Run the client from https://github.com/CirclesUBI/circles-myxogastria
+3. Visit http://localhost:8080/ and complete the setup of a new account
+4. Once you reach http://localhost:8080/validation:
     - Open a new terminal window
     - Run `cd utils && npm i && node utils/src/fund-account.js [YOUR-SAFE-ADDRESS]` and wait for completion
-4. Refresh the browser window to finish the setup of the initial account
+5. Refresh the browser window to finish the setup of the initial account
 
 
 ## Setup
