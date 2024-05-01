@@ -55,7 +55,7 @@ Enables you to start Circles services in Docker containers for Circles developme
 2. Visit http://localhost:8080/ and complete the setup of a new account
 3. Once you reach http://localhost:8080/validation:
     - Open a new terminal window
-    - Run `node utils/src/fund-account.js [YOUR-SAFE-ADDRESS]` and wait for completion
+    - Run `cd utils && npm i && node utils/src/fund-account.js [YOUR-SAFE-ADDRESS]` and wait for completion
 4. Refresh the browser window to finish the setup of the initial account
 
 
